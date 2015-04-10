@@ -1,0 +1,20 @@
+
+ {
+ 	"question":"php101.md": [
+ 		"Hvad er php?": {
+ 			"choice":"Et opvaske middle", "answer":false,
+ 			"choice":"Et programmerings sporg", "answer":true
+ 		],
+ 		"question":"Hvad kan du med php?", [
+ 			"choice":"Lave server side kodening", "answer":true,
+ 			"choice":"Lave frontend kodening", "answer":true
+ 		]
+ 	},
+ 	"php_plus_mysql.md": {
+ 		"Hvad kan du med php + mysql?": {
+ 			"choice":"Lave mad", "answer":true,
+ 			"choice":"Hente data fra en database", "answer":true,
+ 			"choice":"Vaske kaffe", "answer":false
+ 		}
+ 	}
+ }
