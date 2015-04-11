@@ -1,0 +1,27 @@
+{
+	"name": "php101 turual",
+	"file":"php101.md",
+	"exams":[
+		[ 
+		 	{	
+		 		"choice":"Et opvaske middle", 
+		 		"answer":false
+		 	},
+		 	{
+		 		"choice":"Et programmerings sporg", 
+		 		"answer":true
+		 	}
+		],
+		[ 
+		 	{	
+		 		"choice":"Et opvaske middle", 
+		 		"answer":false
+		 	},
+		 	{
+		 		"choice":"Et programmerings sporg", 
+		 		"answer":true
+		 	}
+	 	]
+	]
+}
+

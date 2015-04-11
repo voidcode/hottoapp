@@ -1,0 +1,27 @@
+{
+	"coursename": "Html for begynder",
+	"coursefile":"html-1.md",
+	"exams":[
+		[ 
+		 	{	
+		 		"choice":"Et opvaske middle", 
+		 		"answer":false
+		 	},
+		 	{
+		 		"choice":"Et programmerings sporg", 
+		 		"answer":true
+		 	}
+		],
+		[ 
+		 	{	
+		 		"choice":"Et opvaske middle", 
+		 		"answer":false
+		 	},
+		 	{
+		 		"choice":"Et programmerings sporg", 
+		 		"answer":true
+		 	}
+	 	]
+	]
+}
+
