@@ -3,9 +3,7 @@
 	"info": "Lær php for begyndere.",
 	"file":"php101.md",
 	"author":"Terkel Sørensen",
-	"authorurl":"http://blog.voidcode.eu/abortme/",
 	"license": "Attribution 4.0 International (CC BY 4.0)",
-	"licenseurl": "http://creativecommons.org/licenses/by/4.0/",
 	"answerserver":"https://howtoapp.voidcode.eu/",
 	"exams":[
 		[ 

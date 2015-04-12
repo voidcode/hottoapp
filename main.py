@@ -10,7 +10,6 @@ with open("courses/php101.json") as coursefile:
 pprint("Title: "+course["name"].split(".")[-1])
 pprint("File: "+course["file"])
 
-
 # exams->test0->quition1->choice
 pprint(course["exams"][0][1]["choice"])
 
@@ -18,8 +17,39 @@ pprint(course["exams"][0][1]["answer"])
 
 #get new instion of webkit
 wv = WebKit.WebView()
+browserSettings = wv.get_settings()
+browserSettings.set_property("enable-java-applet", False)
+browserSettings.set_property("enable-plugins", True)
+browserSettings.set_property("enable-scripts", True)
+ 
+browserSettings.set_property("enable-file-access-from-file-uris", True)
+ 
+browserSettings.set_property("enable-private-browsing", False)
+browserSettings.set_property("enable-spell-checking", False)
+browserSettings.set_property("enable-universal-access-from-file-uris", True)
+browserSettings.set_property("enable-dns-prefetching", True)
+browserSettings.set_property("enable-webaudio", True)
+browserSettings.set_property("enable-webgl", True)
+browserSettings.set_property("enable-fullscreen", True)
+browserSettings.set_property("enable-xss-auditor", False)
+browserSettings.set_property("javascript-can-open-windows-automatically", False)
+browserSettings.set_property('user-agent', 'Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B334b Safari/531.21.10')
+
+#wv.execute_script("alert('ddd');")
+#build html vars with stylesheet-link
+cssLinkTag = "<link rel=\"stylesheet\" type=\"text/css\" href=\""+ os.getcwd() + "/css/desktop.css\">"
+htmlStartString = "<!DOCTYPE html><html><head>"+cssLinkTag+"<meta charset=\"UTF-8\"></head><body>"
+htmlEndString = "</body></html>"
 #Class-------------------------------------------------STARTs
 #this class load all course file into class vars
+currentSelectedCourse=''
+def loadCourse(coursefilename):
+	tmp=''
+	with open(os.getcwd() + "/courses/"+ coursefilename, 'r') as data:
+		tmp = data.read()
+	print htmlStartString+markdown2.markdown(tmp)+htmlEndString
+	wv.load_html_string(htmlStartString+markdown2.markdown(tmp)+htmlEndString, "file:///")
+
 class CourseFolder:	
 	global mdfiles
 	global jsonfiles
@@ -53,11 +83,8 @@ class EventHandler:
 		newcoursedialog_window.show_all()
 		Gtk.main()
 	def onTutorialsListboxItemClicked(self, btn):
-		tmp=''
-		with open(os.getcwd() + "/courses/"+ btn.get_label()+".md", 'r') as data:
-			tmp = data.read()
-		wv.load_string(markdown2.markdown(tmp), 'text/html', 'UTF-8', '/')
-
+		currentSelectedCourse = btn.get_label()+".md"
+		loadCourse(btn.get_label()+".md")
 #Class-------------------------------------------------END
 #load all .md and .json file into cf
 cf = CourseFolder("courses/")
@@ -71,12 +98,11 @@ builder.connect_signals(eh)
 
 mainwindow = builder.get_object("main_window")
 mainwindow.show_all()
-
 #load listbox
 tutorials_listbox = builder.get_object("tutorials_listbox")
 
 #build/fill listbox
-listTopInfoLabel = Gtk.Label("All Tutorials") #set title of listbox
+listTopInfoLabel = Gtk.Label("Courses") #set title of listbox
 tutorials_listbox.add(listTopInfoLabel)
 
 #fill tutorials_listbox with all .md files as coursenamses
@@ -84,9 +110,7 @@ fristRun = True
 for coursename in cf.getMdFiles():
 	#only load frist course
 	if fristRun==True:
-		with open(os.getcwd() + "/courses/"+ coursename , 'r') as data:
-			tmp = data.read()
-		wv.load_string(markdown2.markdown(tmp), 'text/html', 'UTF-8', '/')
+		loadCourse(coursename)
 		fristRun=False
 
 	row = Gtk.ListBoxRow()
@@ -109,6 +133,8 @@ tutorials_listbox.show_all()
 scrolledWindow = builder.get_object("scrolledWindow")
 scrolledWindow.add(wv)
 scrolledWindow.show_all()
+
+
 
 #run gtk.main
 Gtk.main()
