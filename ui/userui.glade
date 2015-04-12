@@ -2,6 +2,11 @@
 <!-- Generated with glade 3.16.1 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-missing-image</property>
+  </object>
   <object class="GtkWindow" id="main_window">
     <property name="name">HotToApp</property>
     <property name="can_focus">False</property>
@@ -29,6 +34,16 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
+                      <object class="GtkImageMenuItem" id="imagemenuitem_newcourse">
+                        <property name="label">New course</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="image">image1</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="openNewCourseDialog" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem2">
                         <property name="label">gtk-open</property>
                         <property name="visible">True</property>
@@ -45,13 +60,12 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem5">
-                        <property name="label">gtk-quit</property>
+                      <object class="GtkImageMenuItem" id="imagemenuitem1">
+                        <property name="label">gtk-open</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="onQuitEvent" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -97,6 +111,7 @@
               <object class="GtkListBox" id="tutorials_listbox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <signal name="row-activated" handler="onTutorialsListboxItemClicked" swapped="no"/>
               </object>
               <packing>
                 <property name="resize">False</property>

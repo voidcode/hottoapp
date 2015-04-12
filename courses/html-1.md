@@ -1,22 +1,5 @@
-####SKP-1
+####HTMl-1
 
 ##Into
-Skp elever må ikke kompataer med andre viromheder da dette er konpatation forvidenen.
-Derfor focucer vi på open socce projecter.
-Det er elevs ansver og plig at selv find et project hvor I han eller hun kan støtte med hjækpe fra læren.
 
-IT-supporter eller Data-tecniker.
-
-IT-supporter skal lære.
-At hurtig at forstå og overskude sellv komplation  desktop og mobilesystemer.
-
-Lære Liber Office pakken
-Herunder: Base, cals og database.
-Der skal oprettes forstørelser via Cals til og fra Database med et skema over Tec elver lønudgifter til skolen.
-
-Data skal vise I Cals men også I en dymanisk rapport.
-I vælger selv et sporg.
-
-Tec´s  elamalpe er med Glade3 og ython3.
-
-< iframe title="YouTube video player" width="480" height="390" src="http://www.youtube.com/watch?v=TheVideoID?autoplay=1" frameborder="0" allowfullscreen>< /iframe>
+Dette kursus lære du at skrive html5.
