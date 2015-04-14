@@ -7,24 +7,29 @@ body {
 	padding: 5vh 5vw;
 }
 h1 {
-	font-size: 6vh;
-	margin-top: 5vh;
-}
-h2 {
 	font-size: 5vh;
 	margin-top: 5vh;
+	margin-bottom: 2vh;
 }
-h3 {
+h2 {
 	font-size: 4vh;
 	margin-top: 5vh;
+	margin-bottom: 2vh;
 }
-h4 {
+h3 {
 	font-size: 3vh;
 	margin-top: 5vh;
+	margin-bottom: 2vh;
 }
-h5 {
+h4 {
 	font-size: 2vh;
 	margin-top: 5vh;
+	margin-bottom: 2vh;
+}
+h5 {
+	font-size: 1vh;
+	margin-top: 5vh;
+	margin-bottom: 2vh;
 }
 p {
 	font-size: 2vh;
@@ -37,11 +42,13 @@ hr {
 	-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;
 }
 img {
-	border:2vh solid #e2e0de;
+	border:1vh solid #e2e0de;
 	background-color: #141414;
 	-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;
 }
 iframe {
+	width: 75vw;
+	height: 60vh;
 	border:2vh solid #e2e0de;
 	background-color: #141414;
 	-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;

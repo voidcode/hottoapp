@@ -24,15 +24,15 @@ browserSettings.set_property("enable-scripts", True)
  
 browserSettings.set_property("enable-file-access-from-file-uris", True)
  
-browserSettings.set_property("enable-private-browsing", False)
-browserSettings.set_property("enable-spell-checking", False)
-browserSettings.set_property("enable-universal-access-from-file-uris", True)
-browserSettings.set_property("enable-dns-prefetching", True)
+#browserSettings.set_property("enable-private-browsing", False)
+#browserSettings.set_property("enable-spell-checking", False)
+#browserSettings.set_property("enable-universal-access-from-file-uris", True)
+#browserSettings.set_property("enable-dns-prefetching", True)
 browserSettings.set_property("enable-webaudio", True)
 browserSettings.set_property("enable-webgl", True)
 browserSettings.set_property("enable-fullscreen", True)
-browserSettings.set_property("enable-xss-auditor", False)
-browserSettings.set_property("javascript-can-open-windows-automatically", False)
+#browserSettings.set_property("enable-xss-auditor", False)
+browserSettings.set_property("javascript-can-open-windows-automatically", True)
 browserSettings.set_property('user-agent', 'Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B334b Safari/531.21.10')
 
 #wv.execute_script("alert('ddd');")
@@ -118,6 +118,11 @@ for coursename in cf.getMdFiles():
 	row.add(hbox)
 	btn = Gtk.Button(label=coursename.split(".")[0])
 	btn.connect("clicked", eh.onTutorialsListboxItemClicked)
+	
+	#adding course-image
+	img = Gtk.Image()
+	img.set_from_file(os.getcwd()+ "/")
+
 	hbox.pack_start(btn, True, True, 0)
 	tutorials_listbox.add(row)
 #show listbox
