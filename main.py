@@ -85,6 +85,7 @@ class EventHandler:
 	def onTutorialsListboxItemClicked(self, btn):
 		currentSelectedCourse = btn.get_label()+".md"
 		loadCourse(btn.get_label()+".md")
+
 #Class-------------------------------------------------END
 #load all .md and .json file into cf
 cf = CourseFolder("courses/")
@@ -97,6 +98,7 @@ builder.add_from_file("ui/userui.glade")
 builder.connect_signals(eh)
 
 mainwindow = builder.get_object("main_window")
+mainwindow.set_icon_from_file(os.getcwd() + "/images/logo.svg")
 mainwindow.show_all()
 #load listbox
 tutorials_listbox = builder.get_object("tutorials_listbox")
