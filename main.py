@@ -1,4 +1,4 @@
-#!/usr/bin/pyhton
+#!/usr/bin/env python
 from gi.repository import Gtk
 import json, os, markdown2
 from pprint import pprint
@@ -87,15 +87,15 @@ class EventHandler:
 		loadCourse(btn.get_label()+".md")
 
 #Class-------------------------------------------------END
-#load all .md and .json file into cf
-cf = CourseFolder("courses/")
 
-eh = EventHandler()
 #load userui from .glade file
 builder = Gtk.Builder()
 builder.add_from_file("ui/userui.glade")
 #adding EventHandler class to builder
+eh = EventHandler()
 builder.connect_signals(eh)
+#load all .md and .json file into cf
+cf = CourseFolder("courses/")
 
 mainwindow = builder.get_object("main_window")
 mainwindow.set_icon_from_file(os.getcwd() + "/images/logo.svg")
@@ -122,8 +122,9 @@ for coursename in cf.getMdFiles():
 	btn.connect("clicked", eh.onTutorialsListboxItemClicked)
 	
 	#adding course-image
-	img = Gtk.Image()
-	img.set_from_file(os.getcwd()+ "/")
+	base = Gtk.Image()
+	base.new_from_file(os.getcwd()+ "/courses/base.svg")
+	btn.set_image(base)
 
 	hbox.pack_start(btn, True, True, 0)
 	tutorials_listbox.add(row)
