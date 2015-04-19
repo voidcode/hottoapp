@@ -74,14 +74,13 @@ class EventHandler:
 	def onQuitEvent(self, *args):
 		Gtk.main_quit(*args)
 	def loadCourseByFile(self, *args):
-		Gtk.main_quit(*args)
+		dialog = Gtk.GtkFileChooserDialog()
+		dialog.show_all()
 	def openNewCourseDialog(self, *args):
 		print 'openNewCourseDialog is clicked!!'
-		builder2 = Gtk.Builder()
-		builder2.add_from_file("ui/newcoursedialog.glade")
-		newcoursedialog_window = builder2.get_object("newcoursedialog_window")
+		builder.add_from_file(os.getcwd() + "/ui/newcoursedialog.glade")
+		newcoursedialog_window = builder.get_object("newcoursedialog_window")
 		newcoursedialog_window.show_all()
-		Gtk.main()
 	def onTutorialsListboxItemClicked(self, btn):
 		currentSelectedCourse = btn.get_label()+".md"
 		loadCourse(btn.get_label()+".md")
@@ -90,7 +89,7 @@ class EventHandler:
 
 #load userui from .glade file
 builder = Gtk.Builder()
-builder.add_from_file("ui/userui.glade")
+builder.add_from_file(os.getcwd() + "/ui/userui.glade")
 #adding EventHandler class to builder
 eh = EventHandler()
 builder.connect_signals(eh)
