@@ -64,11 +64,8 @@ class CourseFolder:
 class EventHandler:
 	def onQuitEvent(self, *args):
 		Gtk.main_quit(*args)
-	def loadCourseByFile(self, *args):
-		dialog = Gtk.GtkFileChooserDialog()
-		dialog.show_all()
 	def openNewCourseDialog(self, *args):
-		print 'openNewCourseDialog is clicked!!'
+		#print 'openNewCourseDialog is clicked!!'
 		builder.add_from_file(os.getcwd() + "/ui/newcoursedialog.glade")
 		newcoursedialog_window = builder.get_object("newcoursedialog_window")
 		newcoursedialog_window.show_all()

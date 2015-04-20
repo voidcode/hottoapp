@@ -16,9 +16,9 @@
 			margin-top: 1vh;
 			background-color: #e2e0de;
 			padding: 2vw;
-			border-radius: 5px; 
-			-moz-border-radius: 5px; 
-			-webkit-border-radius: 5px; 
+			border-radius: 1vw; 
+			-moz-border-radius: 1wv; 
+			-webkit-border-radius: 1wv; 
 		}
 			.exam .item .cb  {
 				font-size: 1vw;
@@ -26,10 +26,10 @@
 			}
 				.exam .item .cb input {
 					border:1px solid #e2e0de;
-					padding: 5px;
+					padding: 5vh;
 				}
 				.exam .item .cb span {
-					padding-left: 1vw;
+					padding-left: 2vw;
 				}
 		.exam .item .btn-submit {
 			margin-top: 5vh; 
@@ -37,8 +37,15 @@
 			border:2px solid #e2e0de;
 			background-color: #e2e0de;
 			color:#141414;
-			padding: 5vw 2vh;
+			padding: 5vh;
 			float:right;
-			font-size: 2vw;
+			font-size: 2vh;
 			cursor: pointer;
+			border-radius: 1vw; 
+			-moz-border-radius: 1vw; 
+			-webkit-border-radius: 1vw;
 		}
+			.exam .item .btn-submit:hover {
+				background-color: #141414;
+				color:#fff;
+			}

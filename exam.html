@@ -8,11 +8,15 @@
 		<script type="text/javascript">
 		$(document).ready(function () {
 			function checkAllQuestion(){
-				$('.exam .question-items .item input[type="checkbox"]').each(function (index, elm) {
-					var isElmChecked = $(elm).attr('checked');
-					alert(isElmChecked);
-					if(isElmChecked === typeof undefined || isElmChecked === 'undefined'){
-						$(elm).css('color', 'red');
+				$('.exam .question-items .item input[type="checkbox"]').each(function (index, element) {
+					var elm = $(element);
+					if(String(elm.prop('checked')) === String(elm.val())){
+						elm.parent().css('color', '#000');
+						elm.parent().css('background-color', '#8dc906');//green
+					}
+					else {
+						elm.parent().css('color', '#fff');
+						elm.parent().css('background-color', '#e00c0b');//red
 					}
 				});
 			}
@@ -39,7 +43,7 @@
 				for(var j=1; j<data[i].length; j++){
 					stringBuilder +=
 						'<li class="cb">'+
-							'<input type="checkbox" value="'+ data[i][j].answer +'" /><span>'+ data[i][j].choice + '</span>' +
+							'<input type="checkbox" checkbox="undefined" value="'+ data[i][j].answer +'" /><span>'+ data[i][j].choice + '</span>' +
 						'</li>';
 				}
 				stringBuilder +=
@@ -74,7 +78,7 @@
 				<div class="info"></div>
 				<div class="question-items"></div>
 				<div class="item">
-					<input type="button" class="btn-submit" value="I am DONE"/>
+					<input type="button" class="btn-submit" value="See answers"/>
 				</div>
 			</form>
 		</div>
