@@ -1,0 +1,44 @@
+.exam-items {
+
+}
+	.exam-items ul {
+
+	}	
+		.exam .item ul li {
+		}
+		.exam .item .question {
+			margin-top:5vh; 
+			list-style-type: none;
+			font-size: 8vh;
+		}
+		.exam .item .cb {
+			list-style-type: none;
+			margin-top: 1vh;
+			background-color: #e2e0de;
+			padding: 2vw;
+			border-radius: 5px; 
+			-moz-border-radius: 5px; 
+			-webkit-border-radius: 5px; 
+		}
+			.exam .item .cb  {
+				font-size: 1vw;
+				color:#141414;
+			}
+				.exam .item .cb input {
+					border:1px solid #e2e0de;
+					padding: 5px;
+				}
+				.exam .item .cb span {
+					padding-left: 1vw;
+				}
+		.exam .item .btn-submit {
+			margin-top: 5vh; 
+			margin-bottom: 5vh;
+			border:2px solid #e2e0de;
+			background-color: #e2e0de;
+			color:#141414;
+			padding: 5vw 2vh;
+			float:right;
+			font-size: 2vw;
+			cursor: pointer;
+		}

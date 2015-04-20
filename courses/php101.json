@@ -7,22 +7,40 @@
 	"answerserver":"https://howtoapp.voidcode.eu/",
 	"exams":[
 		[ 
+			{
+				"question":"Hvad er PHP5"
+			},
 		 	{	
 		 		"choice":"Et opvaske middle", 
 		 		"answer":false
 		 	},
 		 	{
-		 		"choice":"Et programmerings sporg", 
+		 		"choice":"Et programmerings sporg1", 
+		 		"answer":true
+		 	},
+		 	{
+		 		"choice":"Et programmerings sporg2", 
+		 		"answer":true
+		 	},
+		 	{
+		 		"choice":"Et programmerings sporg3", 
+		 		"answer":true
+		 	},
+		 	{
+		 		"choice":"Et programmerings sporg4", 
 		 		"answer":true
 		 	}
 		],
 		[ 
+			{
+				"question":"Hvad er css"
+			},
 		 	{	
-		 		"choice":"Et opvaske middle", 
+		 		"choice":"Et opvaske middle22", 
 		 		"answer":false
 		 	},
 		 	{
-		 		"choice":"Et programmerings sporg", 
+		 		"choice":"Et markup sporg", 
 		 		"answer":true
 		 	}
 	 	]

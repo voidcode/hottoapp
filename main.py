@@ -4,16 +4,6 @@ import json, os, markdown2
 from pprint import pprint
 
 from gi.repository import WebKit
-with open("courses/php101.json") as coursefile:
-	course = json.load(coursefile)
-
-pprint("Title: "+course["name"].split(".")[-1])
-pprint("File: "+course["file"])
-
-# exams->test0->quition1->choice
-pprint(course["exams"][0][1]["choice"])
-
-pprint(course["exams"][0][1]["answer"])
 
 #get new instion of webkit
 wv = WebKit.WebView()
@@ -26,7 +16,7 @@ browserSettings.set_property("enable-file-access-from-file-uris", True)
  
 #browserSettings.set_property("enable-private-browsing", False)
 #browserSettings.set_property("enable-spell-checking", False)
-#browserSettings.set_property("enable-universal-access-from-file-uris", True)
+browserSettings.set_property("enable-universal-access-from-file-uris", True)
 #browserSettings.set_property("enable-dns-prefetching", True)
 browserSettings.set_property("enable-webaudio", True)
 browserSettings.set_property("enable-webgl", True)
@@ -50,7 +40,8 @@ def loadCourse(coursefilename):
 	print htmlStartString+markdown2.markdown(tmp)+htmlEndString
 	wv.load_html_string(htmlStartString+markdown2.markdown(tmp)+htmlEndString, "file:///")
 
-class CourseFolder:	
+class CourseFolder:
+	global currentSelectedCourse;
 	global mdfiles
 	global jsonfiles
 	def __init__(self, coursepath):
@@ -84,7 +75,10 @@ class EventHandler:
 	def onTutorialsListboxItemClicked(self, btn):
 		currentSelectedCourse = btn.get_label()+".md"
 		loadCourse(btn.get_label()+".md")
-
+	def onTaskExam(self, *args):
+		print("onTaskExam is clicked!!")
+		wv.open(os.getcwd()+"/exam.html")
+		print("wv.load --> os.getcwd()+ /exam.html")
 #Class-------------------------------------------------END
 
 #load userui from .glade file
@@ -140,8 +134,6 @@ tutorials_listbox.show_all()
 scrolledWindow = builder.get_object("scrolledWindow")
 scrolledWindow.add(wv)
 scrolledWindow.show_all()
-
-
 
 #run gtk.main
 Gtk.main()

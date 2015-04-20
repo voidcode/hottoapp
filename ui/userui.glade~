@@ -66,6 +66,15 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkImageMenuItem" id="imagemenuitem_onTaskExam">
+                        <property name="label">StartExam</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="image">image3</property>
+                        <property name="use_stock">False</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem1">
                         <property name="label">Exit</property>
                         <property name="visible">True</property>
@@ -80,7 +89,7 @@
               </object>
             </child>
             <child>
-              <object class="GtkMenuItem" id="menuitem4">
+              <object class="GtkMenuItem" id="menuitem2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_Help</property>
@@ -148,5 +157,10 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-missing-image</property>
   </object>
 </interface>
