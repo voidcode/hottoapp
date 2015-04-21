@@ -111,7 +111,7 @@
               <object class="GtkScrolledWindow" id="scrolledWindow">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="shadow_type">in</property>
+                <property name="border_width">0</property>
                 <child>
                   <placeholder/>
                 </child>
