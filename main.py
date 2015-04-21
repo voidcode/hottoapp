@@ -64,10 +64,15 @@ class CourseFolder:
 class EventHandler:
 	def onQuitEvent(self, *args):
 		Gtk.main_quit(*args)
+	def showMarkdownEditor(self, *args):
+		builder.add_from_file(os.getcwd() + "/ui/markdowneditor.glade")
+		markdowneditor_window = builder.get_object("markdowneditor_window")
+		markdowneditor_window.show_all()
 	def openNewCourseDialog(self, *args):
 		#print 'openNewCourseDialog is clicked!!'
 		builder.add_from_file(os.getcwd() + "/ui/newcoursedialog.glade")
 		newcoursedialog_window = builder.get_object("newcoursedialog_window")
+		builder.connect_signals(self)
 		newcoursedialog_window.show_all()
 	def onTutorialsListboxItemClicked(self, btn):
 		currentSelectedCourse = btn.get_label()+".md"

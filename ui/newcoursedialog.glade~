@@ -272,6 +272,7 @@
             <property name="wrap_mode">char</property>
             <property name="left_margin">4</property>
             <property name="right_margin">5</property>
+            <property name="input_purpose">alpha</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
