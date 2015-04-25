@@ -10,17 +10,14 @@ def addBrowserSettings(wvObj):
 	browserSettings.set_property("enable-java-applet", False)
 	browserSettings.set_property("enable-plugins", True)
 	browserSettings.set_property("enable-scripts", True)
-	 
-	browserSettings.set_property("enable-file-access-from-file-uris", True)
-	 
-	#browserSettings.set_property("enable-private-browsing", False)
-	#browserSettings.set_property("enable-spell-checking", False)
-	browserSettings.set_property("enable-universal-access-from-file-uris", True)
-	#browserSettings.set_property("enable-dns-prefetching", True)
+	browserSettings.set_property("enable-private-browsing", False)
+	browserSettings.set_property("enable-spell-checking", False)
+	browserSettings.set_property('enable-file-access-from-file-uris', 1)
+	browserSettings.set_property("enable-dns-prefetching", True)
 	browserSettings.set_property("enable-webaudio", True)
 	browserSettings.set_property("enable-webgl", True)
 	browserSettings.set_property("enable-fullscreen", True)
-	#browserSettings.set_property("enable-xss-auditor", False)
+	browserSettings.set_property("enable-xss-auditor", True)
 	browserSettings.set_property("javascript-can-open-windows-automatically", True)
 	browserSettings.set_property('user-agent', 'Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B334b Safari/531.21.10')
 
@@ -43,7 +40,7 @@ def loadCourse(coursefilename):
 	tmp=''
 	with open(os.getcwd() + "/courses/"+ coursefilename, 'r') as data:
 		tmp = data.read()
-	print htmlStartString+markdown2.markdown(tmp)+htmlEndString
+	#print htmlStartString+markdown2.markdown(tmp)+htmlEndString
 	wv.load_html_string(htmlStartString+markdown2.markdown(tmp)+htmlEndString, "file:///")
 
 class CourseFolder:
@@ -110,9 +107,16 @@ class EventHandler:
 		currentSelectedCourse = btn.get_label()+".md"
 		loadCourse(btn.get_label()+".md")
 	def onTaskExam(self, *args):
-		print("onTaskExam is clicked!!")
-		wv.open(os.getcwd()+"/exam.html")
-		print("wv.load --> os.getcwd()+ /exam.html")
+		#print("onTaskExam is clicked!!")
+		uriPath = os.getcwd()+"/exam.html"
+		#% btn.get_label()
+		#examHtmlBuilder=''
+		#with open(uriPath, 'r') as data:
+			#examHtmlBuilder = data.read()
+		#wv.load_html_string(examHtmlBuilder, 'file:///')
+		wv.open(uriPath)
+		#print("wv.load --> os.getcwd()+ /exam.html")
+		#print("We try this url: " +uriPath)
 #Class-------------------------------------------------END
 
 #load userui from .glade file
@@ -134,7 +138,8 @@ mainwindow.show_all()
 tutorials_listbox = builder.get_object("tutorials_listbox")
 
 #build/fill listbox
-listTopInfoLabel = Gtk.Label("Courses") #set title of listbox
+listTopInfoLabel = Gtk.Label() #set title of listbox
+listTopInfoLabel.set_markup('<b>CourseFolder</b>')
 
 #set bgcolor
 tutorials_listbox.override_background_color(0, bgColor)
