@@ -75,14 +75,27 @@ class EventHandler:
 		h3 = builder.get_object('image_h3')
 		h4 = builder.get_object('image_h4')
 		h5 = builder.get_object('image_h5')
-		p = builder.get_object('image_p')
+		bold = builder.get_object('image_bold')
 		h1.set_from_file(os.getcwd() + '/images/png/h1.png')
 		h2.set_from_file(os.getcwd() + '/images/png/h2.png')
 		h3.set_from_file(os.getcwd() + '/images/png/h3.png')
 		h4.set_from_file(os.getcwd() + '/images/png/h4.png')
 		h5.set_from_file(os.getcwd() + '/images/png/h5.png')
-		p.set_from_file(os.getcwd() + '/images/png/p.png')
+		bold.set_from_file(os.getcwd() + '/images/png/bold.png')
+		
+		#rigth menu
+		hr = builder.get_object('image_hr')
+		orderlist = builder.get_object('image_orderlist')
+		dotslist = builder.get_object('image_dotslist')		
+		codetoggle = builder.get_object('image_codetoggle')
+		image = builder.get_object('image_image')
 
+		hr.set_from_file(os.getcwd() + '/images/png/hr.png')
+		dotslist.set_from_file(os.getcwd() + '/images/png/dotslist.png')
+		orderlist.set_from_file(os.getcwd()+'/images/png/orderlist.png')
+		codetoggle.set_from_file(os.getcwd() + '/images/png/code_toggle.png')
+		image.set_from_file(os.getcwd() + '/images/png/image.png')
+		 
 
 		sw_edit = builder.get_object('sw_edit')
 		wv_edit = WebKit.WebView()
