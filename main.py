@@ -38,13 +38,12 @@ bgColor = Gdk.RGBA.from_color(Gdk.color_parse('#141414'))
 currentSelectedCourse=''
 def loadCourse(coursefilename):
 	tmp=''
-	with open(os.getcwd() + "/courses/"+ coursefilename, 'r') as data:
+	with open(os.getenv('HOME') +'/.howtoapp-courses/'+ coursefilename, 'r') as data:
 		tmp = data.read()
 	#print htmlStartString+markdown2.markdown(tmp)+htmlEndString
 	wv.load_html_string(htmlStartString+markdown2.markdown(tmp)+htmlEndString, "file:///")
 
 class CourseFolder:
-	global currentSelectedCourse;
 	global mdfiles
 	global jsonfiles
 	def __init__(self, coursepath):
@@ -117,9 +116,8 @@ class EventHandler:
 		newcoursedialog.set_position(Gtk.WindowPosition.CENTER)
 		newcoursedialog.show_all()
 	def onTutorialsListboxItemClicked(self, btn):
-		currentSelectedCourse = btn.get_label()+".md"
-		loadCourse(btn.get_label()+".md")
-	def onTaskExam(self, *args):
+		loadCourse(btn.get_label().lower())
+	def onStartTest(self, btn):
 		#print("onTaskExam is clicked!!")
 		uriPath = os.getcwd()+"/exam.html"
 		#% btn.get_label()
@@ -128,7 +126,6 @@ class EventHandler:
 			#examHtmlBuilder = data.read()
 		#wv.load_html_string(examHtmlBuilder, 'file:///')
 		wv.open(uriPath)
-		#print("wv.load --> os.getcwd()+ /exam.html")
 		#print("We try this url: " +uriPath)
 #Class-------------------------------------------------END
 
@@ -139,7 +136,7 @@ builder.add_from_file(os.getcwd() + "/ui/userui.glade")
 eh = EventHandler()
 builder.connect_signals(eh)
 #load all .md and .json file into cf
-cf = CourseFolder("courses/")
+cf = CourseFolder(os.getenv('HOME') +'/.howtoapp-courses')
 
 mainwindow = builder.get_object("main_window")
 mainwindow.set_icon_from_file(os.getcwd() + "/images/logo.svg")
@@ -167,17 +164,17 @@ for coursename in cf.getMdFiles():
 		fristRun=False
 
 	row = Gtk.ListBoxRow()
-	hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
+	hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
 	row.add(hbox)
-	btn = Gtk.Button(label=coursename.split(".")[0])
-	btn.connect("clicked", eh.onTutorialsListboxItemClicked)
 	
-	#adding course-image
-	base = Gtk.Image()
-	base.new_from_file(os.getcwd()+ "/courses/base.svg")
-	btn.set_image(base)
+	mdbtn = Gtk.Button(label=coursename.split(".")[0].title()+'.md')
+	mdbtn.connect("clicked", eh.onTutorialsListboxItemClicked)
+	
+	jsonbtn = Gtk.Button(label='test')
+	jsonbtn.connect('clicked', eh.onStartTest)
 
-	hbox.pack_start(btn, True, True, 50)
+	hbox.pack_start(mdbtn, False, False, 5)
+	hbox.pack_start(jsonbtn, False, False, 0)
 	tutorials_listbox.add(row)
 #show listbox
 tutorials_listbox.show_all()
