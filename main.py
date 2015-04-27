@@ -4,6 +4,10 @@ import json, os, markdown2
 from pprint import pprint
 
 from gi.repository import WebKit
+coursesRoot = os.getenv('HOME')+'/.howtoapp-courses'
+if not os.path.exists(coursesRoot):
+	print 'mkdir --> '+coursesRoot
+	os.mkdir(coursesRoot)
 
 def addBrowserSettings(wvObj):
 	browserSettings = wvObj.get_settings()
@@ -21,10 +25,12 @@ def addBrowserSettings(wvObj):
 	browserSettings.set_property("javascript-can-open-windows-automatically", True)
 	browserSettings.set_property('user-agent', 'Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B334b Safari/531.21.10')
 
+global mainwindow
+
+mainwindowIsFullscreen = True
 #get new instion of webkit
 wv = WebKit.WebView()
 addBrowserSettings(wv)
-
 #wv.execute_script("alert('ddd');")
 #build html vars with stylesheet-link
 cssLinkTag = "<link rel=\"stylesheet\" type=\"text/css\" href=\""+ os.getcwd() + "/css/desktop.css\">"
@@ -35,8 +41,8 @@ htmlEndString = "</body></html>"
 bgColor = Gdk.RGBA.from_color(Gdk.color_parse('#141414'))
 #Class-------------------------------------------------STARTs
 #this class load all course file into class vars
-currentSelectedCourse=''
 def loadCourse(coursefilename):
+	currentSelectedCourse = coursename
 	tmp=''
 	with open(os.getenv('HOME') +'/.howtoapp-courses/'+ coursefilename, 'r') as data:
 		tmp = data.read()
@@ -63,7 +69,10 @@ class CourseFolder:
 	def getCourseAsHtml(self):
 		return "todo"
 
+global IsMainWindowFullscreen
+IsMainWindowFullscreen = True
 class EventHandler:
+	currentSelectedCourse = ''
 	def onQuitEvent(self, *args):
 		Gtk.main_quit(*args)
 	def showMarkdownEditor(self, *args):
@@ -106,29 +115,65 @@ class EventHandler:
 		markdowneditor.override_background_color(0, bgColor)
 		markdowneditor.set_position(Gtk.WindowPosition.CENTER)
 		markdowneditor.show_all()
+	def onBtnNext_newcoursedialog(self, *args):
+		coursename = builder.get_object('entry_coursename').get_text()
+		
+		#--
+		#tv_info = builder.get_object('tv_info')
+		#start_tvinfo = tv_info.textbuffer.get_start_iter()
+		#end_tvinfo = tv_info.textbuffer.get_end_iter()
+ 		#info = tv_info.textbuffer.get_text(start_tvinfo, end_tvinfo, True)
+		#--
+		if not coursename == '':
+			author = builder.get_object('entry_author').get_text()
+			testFilePath = coursesRoot+'/'+coursename+'.test'
+			print testFilePath
+			f = open(testFilePath, 'w+')
+			newTestMetaData = {
+				'name': coursename,	
+				'info': '',
+				'author': author,
+				'license': ''
+			}
+			json.dump(newTestMetaData, f, indent=4)
+			f.close()
+			self.showMarkdownEditor(self)
+			builder.get_object("newcoursedialog_window").hide()
 	def openNewCourseDialog(self, *args):
 		#print 'openNewCourseDialog is clicked!!'
 		builder.add_from_file(os.getcwd() + "/ui/newcoursedialog.glade")
 		newcoursedialog = builder.get_object("newcoursedialog_window")
-		builder.connect_signals(self)
-		newcoursedialog.set_title('New course / edit course')
+		newcoursedialog.set_title('New course')
 		newcoursedialog.override_background_color(0, bgColor)
 		newcoursedialog.set_position(Gtk.WindowPosition.CENTER)
 		newcoursedialog.show_all()
+		
+		btn_next = builder.get_object('btn_next')
+		btn_next.connect('clicked', self.onBtnNext_newcoursedialog)
 	def onTutorialsListboxItemClicked(self, btn):
-		loadCourse(btn.get_label().lower())
-	def onStartTest(self, btn):
-		#print("onTaskExam is clicked!!")
-		uriPath = os.getcwd()+"/exam.html"
-		#% btn.get_label()
-		#examHtmlBuilder=''
-		#with open(uriPath, 'r') as data:
-			#examHtmlBuilder = data.read()
-		#wv.load_html_string(examHtmlBuilder, 'file:///')
-		wv.open(uriPath)
-		#print("We try this url: " +uriPath)
+		loadCourse(btn.get_label().lower()+'.md')
+	def onWvLoadFinished(self, frame, s):
+		print self
+		print frame
+		print s
+		courseName = 'skolepraktik'
+		courseFolder = os.getenv('HOME') +'/.howtoapp-courses/'
+		wv.execute_script("loadTest('"+courseFolder+"', '"+courseName+"');")
+	def onStartExam(self, btn):
+		path = os.getcwd()+"/exam.html"
+		databuilder = ''
+		with open(path, 'r') as data:
+			databuilder = data.read()
+		wv.load_html_string(databuilder, 'file:///')
+		scrolledWindow.add(examwv)
+	def toggleFullScreen(self, btn):
+		if IsMainWindowFullscreen is True:
+			IsMainWindowFullscreen = False
+			mainwindow.unfullscreen()
+		else:
+			IsMainWindowFullscreen is True
+			mainwindow.fullscreen()
 #Class-------------------------------------------------END
-
 #load userui from .glade file
 builder = Gtk.Builder()
 builder.add_from_file(os.getcwd() + "/ui/userui.glade")
@@ -137,24 +182,38 @@ eh = EventHandler()
 builder.connect_signals(eh)
 #load all .md and .json file into cf
 cf = CourseFolder(os.getenv('HOME') +'/.howtoapp-courses')
+wv.connect('load-finished', eh.onWvLoadFinished)
 
 mainwindow = builder.get_object("main_window")
 mainwindow.set_icon_from_file(os.getcwd() + "/images/logo.svg")
 mainwindow.override_background_color(0, bgColor)
 mainwindow.set_position(Gtk.WindowPosition.CENTER)
-#mainwindow.fullscreen()
+
+mainwindow.connect("delete-event", Gtk.main_quit)
 mainwindow.show_all()
 #load listbox
 tutorials_listbox = builder.get_object("tutorials_listbox")
 
+#adding logo
+logo = Gtk.Image()
+logo.set_from_file(os.getcwd() +'/images/logo.svg')
+
+btnLogo = Gtk.Button()
+btnLogo.connect('clicked', eh.toggleFullScreen)
+btnLogo.set_image(logo) 
+btnLogo.set_relief(Gtk.ReliefStyle.NONE)
+logo.override_background_color(0, bgColor)
+tutorials_listbox.add(btnLogo)
+
 #build/fill listbox
 listTopInfoLabel = Gtk.Label() #set title of listbox
-listTopInfoLabel.set_markup('<b>CourseFolder</b>')
+listTopInfoLabel.set_halign(Gtk.Align.START)
+listTopInfoLabel.set_markup('<b>All courses:</b>')
 
 #set bgcolor
 tutorials_listbox.override_background_color(0, bgColor)
 tutorials_listbox.add(listTopInfoLabel)
-
+	
 #fill tutorials_listbox with all .md files as coursenamses
 fristRun = True
 for coursename in cf.getMdFiles():
@@ -162,16 +221,14 @@ for coursename in cf.getMdFiles():
 	if fristRun==True:
 		loadCourse(coursename)
 		fristRun=False
-
 	row = Gtk.ListBoxRow()
 	hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
-	row.add(hbox)
-	
-	mdbtn = Gtk.Button(label=coursename.split(".")[0].title()+'.md')
+	row.add(hbox)	
+	mdbtn = Gtk.Button(label=coursename.split(".")[0].title())
 	mdbtn.connect("clicked", eh.onTutorialsListboxItemClicked)
-	
-	jsonbtn = Gtk.Button(label='test')
-	jsonbtn.connect('clicked', eh.onStartTest)
+			
+	jsonbtn = Gtk.Button(label='exam'.title())
+	jsonbtn.connect('clicked', eh.onStartExam)
 
 	hbox.pack_start(mdbtn, False, False, 5)
 	hbox.pack_start(jsonbtn, False, False, 0)
@@ -179,14 +236,13 @@ for coursename in cf.getMdFiles():
 #show listbox
 tutorials_listbox.show_all()
 
-#fill vw with frist .md file in listbox by default
-#convert .md to .html
-#load .html file in vw 
+		#fill vw with frist .md file in listbox by default
+		#convert .md to .html
+		#load .html file in vw 
 
 #addind vw to scrolledWindow
 scrolledWindow = builder.get_object("scrolledWindow")
 scrolledWindow.add(wv)
 scrolledWindow.show_all()
-
 #run gtk.main
 Gtk.main()

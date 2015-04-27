@@ -4,19 +4,6 @@
 		<title>Exam</title>
 		<link rel="stylesheet" type="text/css" href="/home/work/workspace/howtoapp/css/desktop.css" />
 		<link rel="stylesheet" type="text/css" href="/home/work/workspace/howtoapp/css/exam.css" />
-		<meta charset="UTF-8">
-	</head>
-	<body>
-		<div class="exam">
-			<form action="" method="post">
-				<h1></h1>
-				<div class="info"></div>
-				<div class="question-items"></div>
-				<div class="item">
-					<input type="button" class="btn-submit" value="See answers"/>
-				</div>
-			</form>
-		</div>
 		<script type="text/javascript" src="/home/work/workspace/howtoapp/js/jquery-1.11.2.min.js"></script>
 		<script type="text/javascript">			
 		$(document).ready(function () {			
@@ -45,6 +32,7 @@
 			    }
 			    return vars;
 			}
+			
 			function newQuestionItem(data, i){
 				var stringBuilder='';
 				stringBuilder = '<div class="item">'+
@@ -64,16 +52,11 @@
 
 				return stringBuilder;
 			}
-			$('.exam .item .btn-submit').on('click', function (event) {
-				checkAllQuestion();
-			});
-			window.loadTest = function(courseFolder, courseName){
-				alert('loadTest is running!!... courseFolder-->'+courseFolder+', courseName-->'+courseName );
+			window.loadTest = function(courseFolder, courseName){ 
 				$.ajax({
 					url: courseFolder+courseName+'.test',
 					dataType: 'json'
 				}).done(function (file) {
-					alert('JQ is running!!');
 					$('.exam h1').html('EXAM - '+file.name);
 					$('.exam .info').html(file.info);
 					for(var i=0; i<file.exams.length; i++){
@@ -81,9 +64,26 @@
 							newQuestionItem(file.exams, i)
 						);
 					}
+					alert('JQ is running!!');
 				});
 			}
+			$('.exam .item .btn-submit').on('click', function (event) {
+				checkAllQuestion();
+			});
 		});
 		</script>
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<div class="exam">
+			<form action="" method="post">
+				<h1></h1>
+				<div class="info"></div>
+				<div class="question-items"></div>
+				<div class="item">
+					<input type="button" class="btn-submit" value="See answers"/>
+				</div>
+			</form>
+		</div>
 	</body>
 </html>
