@@ -2,8 +2,8 @@
 <html>
 	<head>
 		<title>Exam</title>
-		<link rel="stylesheet" type="text/css" href="/home/work/workspace/howtoapp/css/desktop.css" />
-		<link rel="stylesheet" type="text/css" href="/home/work/workspace/howtoapp/css/exam.css" />
+		<link rel="stylesheet" type="text/css" href="css/desktop.css" />
+		<link rel="stylesheet" type="text/css" href="css/exam.css" />
 		<meta charset="UTF-8">
 	</head>
 	<body>
@@ -17,7 +17,7 @@
 				</div>
 			</form>
 		</div>
-		<script type="text/javascript" src="/home/work/workspace/howtoapp/js/jquery-1.11.2.min.js"></script>
+		<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
 		<script type="text/javascript">			
 		$(document).ready(function () {			
 			function checkAllQuestion(){
@@ -67,13 +67,15 @@
 			$('.exam .item .btn-submit').on('click', function (event) {
 				checkAllQuestion();
 			});
+			function showDialog (string) {
+				
+			}
 			window.loadTest = function(courseFolder, courseName){
-				alert('loadTest is running!!... courseFolder-->'+courseFolder+', courseName-->'+courseName );
+				alert('Test: '+courseName+'.test\n'+'From the course: '+courseName);
 				$.ajax({
 					url: courseFolder+courseName+'.test',
 					dataType: 'json'
 				}).done(function (file) {
-					alert('JQ is running!!');
 					$('.exam h1').html('EXAM - '+file.name);
 					$('.exam .info').html(file.info);
 					for(var i=0; i<file.exams.length; i++){

@@ -7,6 +7,15 @@
 		<script type="text/javascript">
 		$(document).ready(function () {
 			$('.markdowneditor').focus();
+			window.loadMdFile = function (){
+				alert('markdowneditor.html->loadFile is running!!');
+				$.ajax({
+					url: '/home/ts/.howtoapp-courses/',
+					dataType: 'json'
+				}).done(function(coursefile){
+					$('.markdowneditor').html(coursefile);
+				});
+			}
 		});
 		</script>
 		<meta charset="UTF-8">

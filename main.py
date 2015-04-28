@@ -69,14 +69,35 @@ class CourseFolder:
 	def getCourseAsHtml(self):
 		return "todo"
 
-global IsMainWindowFullscreen
-IsMainWindowFullscreen = True
+
 class EventHandler:
-	currentSelectedCourse = ''
+	global isMainWindowFullscreen
+	global currentSelectedCoursename
+	def __init__(self):
+		self.isMainWindowFullscreen = True
+		self.currentSelectedCoursename = ''
 	def onQuitEvent(self, *args):
 		Gtk.main_quit(*args)
-	def showMarkdownEditor(self, *args):
+	def showMarkdownEditor(self, coursename):
 		builder.add_from_file(os.getcwd() + "/ui/markdowneditor.glade")
+
+		filechooser = builder.get_object('filechooser')
+		filechooser.set_filename(os.getenv('HOME') + '/.howtoapp-courses/'+coursename+'.test')
+
+		mdCourseFilePath = os.getenv('HOME') + '/.howtoapp-courses/'+coursename+'.md'
+
+		mdDataBuilder=''
+		if os.path.exists(mdCourseFilePath):
+			with open(mdCourseFilePath, 'r+') as data:
+				mdDataBuilder = data.read()
+		else:
+			f = open(mdCourseFilePath, 'w+')
+			f.write('TEST DATA')
+			f.close()
+			with open(mdCourseFilePath, 'r') as d:
+				mdDataBuilder = d.read() 
+
+		print mdDataBuilder
 		#left menu
 		h1 = builder.get_object('image_h1')
 		h2 = builder.get_object('image_h2')
@@ -109,6 +130,9 @@ class EventHandler:
 		wv_edit = WebKit.WebView()
 		addBrowserSettings(wv_edit)
 		wv_edit.open(os.getcwd() + '/markdowneditor.html')
+
+		wv_edit.execute_script("loadMdFile('%s.md');" % coursename)
+
 		sw_edit.add(wv_edit)
 		sw_edit.show_all()
 		markdowneditor= builder.get_object('markdowneditor_window')
@@ -116,13 +140,16 @@ class EventHandler:
 		markdowneditor.set_position(Gtk.WindowPosition.CENTER)
 		markdowneditor.show_all()
 	def onBtnNext_newcoursedialog(self, *args):
+		label_status = builder.get_object('label_status')
 		coursename = builder.get_object('entry_coursename').get_text()
 		
-		#--
-		#tv_info = builder.get_object('tv_info')
-		#start_tvinfo = tv_info.textbuffer.get_start_iter()
-		#end_tvinfo = tv_info.textbuffer.get_end_iter()
- 		#info = tv_info.textbuffer.get_text(start_tvinfo, end_tvinfo, True)
+		tv_info = builder.get_object('tv_info')
+		buf = tv_info.get_buffer()
+ 		info = buf.get_text(
+ 			buf.get_start_iter(), 
+ 			buf.get_end_iter(), 
+ 			True
+ 		)
 		#--
 		if not coursename == '':
 			author = builder.get_object('entry_author').get_text()
@@ -137,8 +164,10 @@ class EventHandler:
 			}
 			json.dump(newTestMetaData, f, indent=4)
 			f.close()
-			self.showMarkdownEditor(self)
+			self.showMarkdownEditor(coursename)
 			builder.get_object("newcoursedialog_window").hide()
+		else:
+			label_status.set_text('You need to add a coursename!!')
 	def openNewCourseDialog(self, *args):
 		#print 'openNewCourseDialog is clicked!!'
 		builder.add_from_file(os.getcwd() + "/ui/newcoursedialog.glade")
@@ -151,27 +180,24 @@ class EventHandler:
 		btn_next = builder.get_object('btn_next')
 		btn_next.connect('clicked', self.onBtnNext_newcoursedialog)
 	def onTutorialsListboxItemClicked(self, btn):
+		self.currentSelectedCoursename = btn.get_label().lower()
 		loadCourse(btn.get_label().lower()+'.md')
 	def onWvLoadFinished(self, frame, s):
-		print self
-		print frame
-		print s
-		courseName = 'skolepraktik'
-		courseFolder = os.getenv('HOME') +'/.howtoapp-courses/'
-		wv.execute_script("loadTest('"+courseFolder+"', '"+courseName+"');")
+		if not self.currentSelectedCoursename is '': 
+			courseName = 'skp'
+			courseFolder = os.getenv('HOME') +'/.howtoapp-courses/'
+			wv.execute_script("loadTest('"+courseFolder+"', '"+self.currentSelectedCoursename+"');")
+		else:
+			print 'You need to select a coursename! current is-->'+currentSelectedCoursename	
 	def onStartExam(self, btn):
 		path = os.getcwd()+"/exam.html"
-		databuilder = ''
-		with open(path, 'r') as data:
-			databuilder = data.read()
-		wv.load_html_string(databuilder, 'file:///')
-		scrolledWindow.add(examwv)
+		wv.open(path)
 	def toggleFullScreen(self, btn):
-		if IsMainWindowFullscreen is True:
-			IsMainWindowFullscreen = False
+		if self.isMainWindowFullscreen is True:
+			self.isMainWindowFullscreen = False
 			mainwindow.unfullscreen()
-		else:
-			IsMainWindowFullscreen is True
+		elif self.isMainWindowFullscreen is False:
+			self.isMainWindowFullscreen = True
 			mainwindow.fullscreen()
 #Class-------------------------------------------------END
 #load userui from .glade file
@@ -188,6 +214,8 @@ mainwindow = builder.get_object("main_window")
 mainwindow.set_icon_from_file(os.getcwd() + "/images/logo.svg")
 mainwindow.override_background_color(0, bgColor)
 mainwindow.set_position(Gtk.WindowPosition.CENTER)
+
+mainwindow.fullscreen()
 
 mainwindow.connect("delete-event", Gtk.main_quit)
 mainwindow.show_all()
@@ -230,8 +258,9 @@ for coursename in cf.getMdFiles():
 	jsonbtn = Gtk.Button(label='exam'.title())
 	jsonbtn.connect('clicked', eh.onStartExam)
 
-	hbox.pack_start(mdbtn, False, False, 5)
-	hbox.pack_start(jsonbtn, False, False, 0)
+	hbox.pack_start(mdbtn, False, False, 5)	
+	hbox.pack_end(jsonbtn, False, False, 0)
+
 	tutorials_listbox.add(row)
 #show listbox
 tutorials_listbox.show_all()
