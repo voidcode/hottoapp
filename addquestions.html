@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Markdown Editor</title>
+		<link rel="stylesheet" type="text/css" href="css/desktop.css" />
+		<link rel="stylesheet" type="text/css" href="css/addquestions.css" />
+		<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+		<script type="text/javascript">
+		$(document).ready(function(item){
+			window.loadAllTests = function(){
+				$.ajax({
+					url: '/home/work/.howtoapp-courses/skolepraktik.test',
+					dataType: 'json'
+				}).done(function(data){
+					$(data.exams).each(function(index,item){
+						$('.addquestions').append('<div class="question-item">'+
+							'<div class="inner-item"><span>Question:</span>'+item[0].question+'</div>'+
+							'<div class="inner-item"><span>Choice:</span>'+item[1].choice+'</div>'+
+							'<div class="inner-item"><span>Answer:</span>'+item[1].answer+'</div>'+
+						'</div>');
+					});
+				});
+			}
+			window.loadAllTests();
+		});
+		</script>
+	</head>
+	<body>
+		<div class="addquestions"></div>
+	</body>
+</html>

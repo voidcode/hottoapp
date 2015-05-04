@@ -1,0 +1,31 @@
+body {
+	background-color: #141414;
+	width: 100vw;
+	height:100vh;
+}
+.addquestions {
+	width: 100vw;
+	height:100vh;
+	color:#fff;
+	font-size: 2vw;
+}
+	.addquestions .question-item {
+		background-color: #fff;
+		color:#000;
+		font-size: 2vw;
+		padding: 10px;
+		margin-bottom: 10px;
+		margin-left: 20px;
+		margin-right: 20px;
+	}
+		.addquestions .question-item .inner-item {
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+			.addquestions .question-item .inner-item span {
+				font-weight: bold;
+			}
+		.addquestions .question-item .choice {
+
+		}
+	

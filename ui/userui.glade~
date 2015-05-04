@@ -12,6 +12,11 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-missing-image</property>
   </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-missing-image</property>
+  </object>
   <object class="GtkWindow" id="main_window">
     <property name="name">HotToApp</property>
     <property name="can_focus">False</property>
@@ -50,6 +55,16 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkImageMenuItem" id="imagemenuitem2">
+                        <property name="label">Start course exam</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="image">image3</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="onStartExam" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -82,9 +97,10 @@
             <property name="can_focus">True</property>
             <property name="position">140</property>
             <child>
-              <object class="GtkListBox" id="tutorials_listbox">
+              <object class="GtkListBox" id="listbox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="selection_mode">none</property>
                 <property name="activate_on_single_click">False</property>
                 <signal name="row-activated" handler="onTutorialsListboxItemClicked" swapped="no"/>
               </object>
@@ -98,6 +114,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="border_width">0</property>
+                <property name="hscrollbar_policy">always</property>
                 <child>
                   <placeholder/>
                 </child>

@@ -13,7 +13,7 @@
 				<div class="info"></div>
 				<div class="question-items"></div>
 				<div class="item">
-					<input type="button" class="btn-submit" value="See answers"/>
+					<input type="button" class="btn-submit" value="Check all answers"/>
 				</div>
 			</form>
 		</div>
@@ -67,21 +67,23 @@
 			$('.exam .item .btn-submit').on('click', function (event) {
 				checkAllQuestion();
 			});
-			function showDialog (string) {
-				
-			}
-			window.loadTest = function(courseFolder, courseName){
-				alert('Test: '+courseName+'.test\n'+'From the course: '+courseName);
+			window.loadMdFiles = function(courseFolder, courseName){
 				$.ajax({
 					url: courseFolder+courseName+'.test',
 					dataType: 'json'
 				}).done(function (file) {
-					$('.exam h1').html('EXAM - '+file.name);
-					$('.exam .info').html(file.info);
-					for(var i=0; i<file.exams.length; i++){
-						$('.exam .question-items').append(
-							newQuestionItem(file.exams, i)
-						);
+					if(file.exams != undefined){
+						$('.exam h1').html('EXAM - '+file.name);
+						$('.exam .info').html(file.info);
+						for(var i=0; i<file.exams.length; i++){
+							$('.exam .question-items').append(
+								newQuestionItem(file.exams, i)
+							);
+						}
+					} else {
+						$('.exam').html(
+							'<h1>No course-exams :(</h1>'+
+							'<h3><u>'+courseName+'.md</u> has no .test assigned ...</h3>');
 					}
 				});
 			}

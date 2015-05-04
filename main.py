@@ -31,9 +31,13 @@ mainwindowIsFullscreen = True
 #get new instion of webkit
 wv = WebKit.WebView()
 addBrowserSettings(wv)
+
+wv_edit = WebKit.WebView()
+addBrowserSettings(wv_edit)
+
 #wv.execute_script("alert('ddd');")
 #build html vars with stylesheet-link
-cssLinkTag = "<link rel=\"stylesheet\" type=\"text/css\" href=\""+ os.getcwd() + "/css/desktop.css\">"
+cssLinkTag = "<link rel=\"stylesheet\" type=\"text/css\" href=\""+ os.getcwd() + "/css/desktop.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\""+ os.getcwd() + "/css/course.css\">"
 htmlStartString = "<!DOCTYPE html><html><head>"+cssLinkTag+"<meta charset=\"UTF-8\"></head><body>"
 htmlEndString = "</body></html>"
 
@@ -68,8 +72,6 @@ class CourseFolder:
 		return "todo"
 	def getCourseAsHtml(self):
 		return "todo"
-
-
 class EventHandler:
 	global isMainWindowFullscreen
 	global currentSelectedCoursename
@@ -78,11 +80,13 @@ class EventHandler:
 		self.currentSelectedCoursename = ''
 	def onQuitEvent(self, *args):
 		Gtk.main_quit(*args)
+	def onInsertTag(self, args, tagname):
+		wv_edit.execute_script('insertTag("%s");' % tagname)
 	def showMarkdownEditor(self, coursename):
 		builder.add_from_file(os.getcwd() + "/ui/markdowneditor.glade")
 
 		filechooser = builder.get_object('filechooser')
-		filechooser.set_filename(os.getenv('HOME') + '/.howtoapp-courses/'+coursename+'.test')
+		filechooser.set_filename(os.getenv('HOME') + '/.howtoapp-courses/'+coursename+'.md')
 
 		mdCourseFilePath = os.getenv('HOME') + '/.howtoapp-courses/'+coursename+'.md'
 
@@ -92,46 +96,125 @@ class EventHandler:
 				mdDataBuilder = data.read()
 		else:
 			f = open(mdCourseFilePath, 'w+')
-			f.write('TEST DATA')
+			f.write('<h1>'+coursename+'</h1>')
 			f.close()
 			with open(mdCourseFilePath, 'r') as d:
 				mdDataBuilder = d.read() 
-
-		print mdDataBuilder
 		#left menu
-		h1 = builder.get_object('image_h1')
-		h2 = builder.get_object('image_h2')
-		h3 = builder.get_object('image_h3')
-		h4 = builder.get_object('image_h4')
-		h5 = builder.get_object('image_h5')
-		bold = builder.get_object('image_bold')
-		h1.set_from_file(os.getcwd() + '/images/png/h1.png')
-		h2.set_from_file(os.getcwd() + '/images/png/h2.png')
-		h3.set_from_file(os.getcwd() + '/images/png/h3.png')
-		h4.set_from_file(os.getcwd() + '/images/png/h4.png')
-		h5.set_from_file(os.getcwd() + '/images/png/h5.png')
-		bold.set_from_file(os.getcwd() + '/images/png/bold.png')
+		#h1 = builder.get_object('image_h1')
+		#h2 = builder.get_object('image_h2')
+		#h3 = builder.get_object('image_h3')
+		#h4 = builder.get_object('image_h4')
+		#h5 = builder.get_object('image_h5')
+		#h1.set_from_file(os.getcwd() + '/images/png/h1.png')
+		#h2.set_from_file(os.getcwd() + '/images/png/h2.png')
+		#h3.set_from_file(os.getcwd() + '/images/png/h3.png')
+		#h4.set_from_file(os.getcwd() + '/images/png/h4.png')
 		
-		#rigth menu
-		hr = builder.get_object('image_hr')
-		orderlist = builder.get_object('image_orderlist')
-		dotslist = builder.get_object('image_dotslist')		
-		codetoggle = builder.get_object('image_codetoggle')
-		image = builder.get_object('image_image')
+		#h5.set_from_file(os.getcwd() + '/images/png/h5.png')
 
-		hr.set_from_file(os.getcwd() + '/images/png/hr.png')
-		dotslist.set_from_file(os.getcwd() + '/images/png/dotslist.png')
-		orderlist.set_from_file(os.getcwd()+'/images/png/orderlist.png')
-		codetoggle.set_from_file(os.getcwd() + '/images/png/code_toggle.png')
-		image.set_from_file(os.getcwd() + '/images/png/image.png')
-		 
+
+
+
+		#rigth menu
+
+		#hr = builder.get_object('image_hr')
+		#orderlist = builder.get_object('image_orderlist')
+		#dotslist = builder.get_object('image_dotslist')		
+		#codetoggle = builder.get_object('image_codetoggle')
+		#image = builder.get_object('image_image')
+
+		#hr.set_from_file(os.getcwd() + '/images/png/hr.png')
+		#dotslist.set_from_file(os.getcwd() + '/images/png/dotslist.png')
+		#orderlist.set_from_file(os.getcwd()+'/images/png/orderlist.png')
+		#codetoggle.set_from_file(os.getcwd() + '/images/png/code_toggle.png')
+		#image.set_from_file(os.getcwd() + '/images/png/image.png')
 
 		sw_edit = builder.get_object('sw_edit')
-		wv_edit = WebKit.WebView()
-		addBrowserSettings(wv_edit)
-		wv_edit.open(os.getcwd() + '/markdowneditor.html')
 
-		wv_edit.execute_script("loadMdFile('%s.md');" % coursename)
+
+		rigthBox = builder.get_object('rigthBox')
+		rigthBox.override_background_color(0, bgColor)
+		rigthHbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+
+		#H1
+		h1Img = Gtk.Image()
+		h1Img.set_from_file(os.getcwd() + '/images/png/h1.png')
+		h1Bold = Gtk.Button()
+		h1Bold.set_image(h1Img)
+		h1Bold.connect('clicked', self.onInsertTag, 'h1')
+		rigthHbox.add(h1Bold)
+
+		#H2
+		h2Img = Gtk.Image()
+		h2Img.set_from_file(os.getcwd() + '/images/png/h2.png')
+		h2Bold = Gtk.Button()
+		h2Bold.set_image(h2Img)
+		h2Bold.connect('clicked', self.onInsertTag, 'h2')
+		rigthHbox.add(h2Bold)
+
+		#H3
+		h3Img = Gtk.Image()
+		h3Img.set_from_file(os.getcwd() + '/images/png/h3.png')
+		h3Bold = Gtk.Button()
+		h3Bold.set_image(h3Img)
+		h3Bold.connect('clicked', self.onInsertTag, 'h3')
+		rigthHbox.add(h3Bold)
+
+		#Blod
+		boldImg = Gtk.Image()
+		boldImg.set_from_file(os.getcwd() + '/images/png/bold.png')
+		btnBold = Gtk.Button()
+		btnBold.set_image(boldImg)
+		btnBold.connect('clicked', self.onInsertTag, 'b')
+		rigthHbox.add(btnBold)
+
+		#p
+		pImg = Gtk.Image()
+		pImg.set_from_file(os.getcwd() + '/images/png/p.png')
+		btnP = Gtk.Button()
+		btnP.set_image(pImg)
+		btnP.connect('clicked', self.onInsertTag, 'p')
+		rigthHbox.add(btnP)
+	
+		#camera
+		cameraImg = Gtk.Image()
+		cameraImg.set_from_file(os.getcwd() + '/images/png/image.png')
+		btnCamera = Gtk.Button()
+		btnCamera.set_image(cameraImg)
+		btnCamera.connect('clicked', self.onInsertTag, 'a')
+		rigthHbox.add(btnCamera)
+
+		#orderlist
+		orderlistImg = Gtk.Image()
+		orderlistImg.set_from_file(os.getcwd() + '/images/png/orderlist.png')
+		orderlistBold = Gtk.Button()
+		orderlistBold.set_image(orderlistImg)
+		orderlistBold.connect('clicked', self.onInsertTag, 'ol')
+		rigthHbox.add(orderlistBold)
+
+		#dotslist
+		dotslistImg = Gtk.Image()
+		dotslistImg.set_from_file(os.getcwd() + '/images/png/dotslist.png')
+		dotslistBold = Gtk.Button()
+		dotslistBold.set_image(dotslistImg)
+		dotslistBold.connect('clicked', self.onInsertTag, 'ul')
+		rigthHbox.add(dotslistBold)
+
+		#hr
+		hrImg = Gtk.Image()
+		hrImg.set_from_file(os.getcwd() + '/images/png/hr.png')
+		btnHr = Gtk.Button()
+		btnHr.set_image(hrImg)
+		btnHr.connect('clicked', self.onInsertTag, 'hr')
+		rigthHbox.add(btnHr)
+
+		#add leftHbox to leftBox
+		rigthBox.add(rigthHbox)
+
+		wv_edit.connect('load-finished', self.onWvLoadFinished)
+		wv_edit.open(os.getcwd() + '/markdowneditor.html')
+		wv_edit.execute_script("loadMdFiles('"+os.getenv('HOME')+"', '"+coursename+".md');" )
 
 		sw_edit.add(wv_edit)
 		sw_edit.show_all()
@@ -139,6 +222,31 @@ class EventHandler:
 		markdowneditor.override_background_color(0, bgColor)
 		markdowneditor.set_position(Gtk.WindowPosition.CENTER)
 		markdowneditor.show_all()
+
+		btn_show_addquestionsdialog = builder.get_object('btn_show_addquestionsdialog')
+		btn_show_addquestionsdialog.connect('clicked', self.btn_show_addquestionsdialog)
+
+	def btn_show_addquestionsdialog(self, *args):
+		builder.add_from_file(os.getcwd() + "/ui/addquestionsdialog.glade")
+
+
+		scrolledwindow_alladdedcourse = builder.get_object('scrolledwindow_alladdedcourse')
+		wv_alladdedcourse = WebKit.WebView()
+		addBrowserSettings(wv_alladdedcourse)
+		wv_alladdedcourse.open(os.getcwd()+'/addquestions.html')
+		scrolledwindow_alladdedcourse.add(wv_alladdedcourse)
+
+
+		btn_new_question_item = builder.get_object('btn_new_question_item')
+		plusImg = Gtk.Image()
+		plusImg.set_from_file(os.getcwd() + '/images/png/plus.png')
+		btn_new_question_item.set_image(plusImg)
+
+		addquestionsdialog = builder.get_object('window_addquestionsdialog')
+		addquestionsdialog.set_title('Add questions')
+		addquestionsdialog.set_position(Gtk.WindowPosition.CENTER)
+		addquestionsdialog.override_background_color(0, bgColor)
+		addquestionsdialog.show_all()
 	def onBtnNext_newcoursedialog(self, *args):
 		label_status = builder.get_object('label_status')
 		coursename = builder.get_object('entry_coursename').get_text()
@@ -152,20 +260,22 @@ class EventHandler:
  		)
 		#--
 		if not coursename == '':
-			author = builder.get_object('entry_author').get_text()
 			testFilePath = coursesRoot+'/'+coursename+'.test'
-			print testFilePath
-			f = open(testFilePath, 'w+')
-			newTestMetaData = {
-				'name': coursename,	
-				'info': '',
-				'author': author,
-				'license': ''
-			}
-			json.dump(newTestMetaData, f, indent=4)
-			f.close()
-			self.showMarkdownEditor(coursename)
-			builder.get_object("newcoursedialog_window").hide()
+			if not os.path.exists(testFilePath):
+				author = builder.get_object('entry_author').get_text()
+				f = open(testFilePath, 'w+')
+				newTestMetaData = {
+					'name': coursename,	
+					'info': '',
+					'author': author,
+					'license': ''
+				}
+				json.dump(newTestMetaData, f, indent=4)
+				f.close()
+				self.showMarkdownEditor(coursename)
+				builder.get_object("newcoursedialog_window").hide()
+			else:
+				label_status.set_text('Please try an other coursename.\n('+coursename+') do already exists!')
 		else:
 			label_status.set_text('You need to add a coursename!!')
 	def openNewCourseDialog(self, *args):
@@ -186,9 +296,7 @@ class EventHandler:
 		if not self.currentSelectedCoursename is '': 
 			courseName = 'skp'
 			courseFolder = os.getenv('HOME') +'/.howtoapp-courses/'
-			wv.execute_script("loadTest('"+courseFolder+"', '"+self.currentSelectedCoursename+"');")
-		else:
-			print 'You need to select a coursename! current is-->'+currentSelectedCoursename	
+			wv.execute_script("loadMdFiles('"+courseFolder+"', '"+self.currentSelectedCoursename+"');")
 	def onStartExam(self, btn):
 		path = os.getcwd()+"/exam.html"
 		wv.open(path)
@@ -219,8 +327,6 @@ mainwindow.fullscreen()
 
 mainwindow.connect("delete-event", Gtk.main_quit)
 mainwindow.show_all()
-#load listbox
-tutorials_listbox = builder.get_object("tutorials_listbox")
 
 #adding logo
 logo = Gtk.Image()
@@ -231,17 +337,23 @@ btnLogo.connect('clicked', eh.toggleFullScreen)
 btnLogo.set_image(logo) 
 btnLogo.set_relief(Gtk.ReliefStyle.NONE)
 logo.override_background_color(0, bgColor)
-tutorials_listbox.add(btnLogo)
 
 #build/fill listbox
-listTopInfoLabel = Gtk.Label() #set title of listbox
-listTopInfoLabel.set_halign(Gtk.Align.START)
-listTopInfoLabel.set_markup('<b>All courses:</b>')
+listTopLabel = Gtk.Label() #set title of listbox
+listTopLabel.set_halign(Gtk.Align.START)
+listTopLabel.set_markup('<b>All courses:</b>')
 
+
+#load listbox
+listbox = builder.get_object("listbox")
 #set bgcolor
-tutorials_listbox.override_background_color(0, bgColor)
-tutorials_listbox.add(listTopInfoLabel)
-	
+listbox.add(btnLogo)
+listbox.set_selection_mode(Gtk.SelectionMode.NONE)
+listbox.override_background_color(0, bgColor)
+listbox.add(listTopLabel)
+
+hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+
 #fill tutorials_listbox with all .md files as coursenamses
 fristRun = True
 for coursename in cf.getMdFiles():
@@ -250,20 +362,15 @@ for coursename in cf.getMdFiles():
 		loadCourse(coursename)
 		fristRun=False
 	row = Gtk.ListBoxRow()
-	hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
-	row.add(hbox)	
+
+	#hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
 	mdbtn = Gtk.Button(label=coursename.split(".")[0].title())
 	mdbtn.connect("clicked", eh.onTutorialsListboxItemClicked)
-			
-	jsonbtn = Gtk.Button(label='exam'.title())
-	jsonbtn.connect('clicked', eh.onStartExam)
-
-	hbox.pack_start(mdbtn, False, False, 5)	
-	hbox.pack_end(jsonbtn, False, False, 0)
-
-	tutorials_listbox.add(row)
+	row.add(mdbtn)
+	listbox.add(row)
 #show listbox
-tutorials_listbox.show_all()
+listbox.add(hbox)
+listbox.show_all()
 
 		#fill vw with frist .md file in listbox by default
 		#convert .md to .html

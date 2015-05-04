@@ -1,3 +1,6 @@
+body {
+	padding: 5vh 5vh;
+}
 .exam-items {
 
 }
@@ -13,12 +16,10 @@
 		}
 		.exam .item .cb {
 			list-style-type: none;
-			margin-top: 1vh;
+			margin-top: 10px;
 			background-color: #e2e0de;
-			padding: 2vw;
-			border-radius: 1vw; 
-			-moz-border-radius: 1wv; 
-			-webkit-border-radius: 1wv; 
+			padding: 10px;
+			font-size: 10px;
 		}
 			.exam .item .cb  {
 				font-size: 1vw;
@@ -26,26 +27,27 @@
 			}
 				.exam .item .cb input {
 					border:1px solid #e2e0de;
-					padding: 5vh;
+					padding: 5vw;
 				}
 				.exam .item .cb span {
 					padding-left: 2vw;
+					font-size: 10px;
 				}
 		.exam .item .btn-submit {
-			margin-top: 5vh; 
-			margin-bottom: 5vh;
-			border:2px solid #e2e0de;
-			background-color: #e2e0de;
-			color:#141414;
-			padding: 5vh;
-			float:right;
-			font-size: 2vw;
+			margin-top: 10px; 
+			margin-bottom: 10px;
+			border:3px solid #e2e0de;
+			background-color: #141414;
+			color:#fff;
+			padding: 10px;
+			font-size: 10px;
 			cursor: pointer;
-			border-radius: 1vw; 
-			-moz-border-radius: 1vw; 
-			-webkit-border-radius: 1vw;
+			border-radius: 5px; 
+			-moz-border-radius: 5px; 
+			-webkit-border-radius: 5px;
+			float:right;
 		}
 			.exam .item .btn-submit:hover {
-				background-color: #141414;
-				color:#fff;
+				background-color: #e2e0de;
+				color:#141414;
 			}

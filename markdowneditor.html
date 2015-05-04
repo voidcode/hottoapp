@@ -2,15 +2,48 @@
 <html>
 	<head>
 		<title>Markdown Editor</title>
+		<link rel="stylesheet" type="text/css" href="css/desktop.css" />
 		<link rel="stylesheet" type="text/css" href="css/markdowneditor.css" />
 		<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
 		<script type="text/javascript">
 		$(document).ready(function () {
 			$('.markdowneditor').focus();
-			window.loadMdFile = function (){
-				alert('markdowneditor.html->loadFile is running!!');
+			var currentHomepath;
+			var currentSeletedCourse;
+			window.saveMarkdownEditorData = function(){
+				var savePath = '/home/'+currentHomepath+'/.howtoapp-courses/'+currentSeletedCourse+'.md';
+				alert('saveMarkdownEditorData is clcked!! savePath-->'+savePath);
+				alert($('.markdowneditor').html());
 				$.ajax({
-					url: '/home/ts/.howtoapp-courses/',
+					url: savePath,
+					type: 'post',
+					data: $('.markdowneditor').html()
+				}).done(function(){
+					alert('.md is updated!!with->'+ $('.markdowneditor').html());
+				});
+			}
+			window.insertTag = function(tagname){
+				var markdowneditor = $('.markdowneditor');
+				if(tagname === 'hr'){
+					markdowneditor.append('<hr/>');
+				} else if(tagname === 'a'){
+					markdowneditor.append('<a href="">Link</a>');
+				} else if(tagname === 'ol'){
+					markdowneditor.append('<ol><li>1.</li><li>2.</li></ol>');
+				} else if(tagname === 'ul'){
+					markdowneditor.append('<ul><li>*</li><li>*</li></ul>');
+				} 
+				else {
+					markdowneditor.append($('<'+tagname+'/>', {
+						html: String(tagname).toUpperCase()
+					}));
+				}
+			}
+			window.loadMdFiles = function (homepath, coursename){
+				currentHomepath = homepath;
+				currentSeletedCourse = coursename;
+				$.ajax({
+					url: '/home/'+currentHomepath+'/.howtoapp-courses/'+coursename+'.md',
 					dataType: 'json'
 				}).done(function(coursefile){
 					$('.markdowneditor').html(coursefile);
