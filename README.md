@@ -4,7 +4,7 @@ This is a little leading app.
 
 Tutorials is make in .md file. 
 
-Multiple choice test make in and .json file.
+Multiple choice tests are make with json format, the file ending is .test
 
 ![CourseView](https://raw.githubusercontent.com/voidcode/howtoapp/master/PR/HowToApp_001.png)
 
@@ -12,14 +12,16 @@ Multiple choice test make in and .json file.
 
 ![Coursebuilder](https://raw.githubusercontent.com/voidcode/howtoapp/master/PR/HowToApp_003.png)
 
-#Install and run
+#Install and run it
 ```
-    cd $HOME && wget https://raw.githubusercontent.com/voidcode/howtoapp/master/install && gksudo install
+    cd /tmp && wget https://raw.githubusercontent.com/voidcode/howtoapp/master/install && gksudo install
 ```
-
 
 #Just run it (after install)
 ```
     cd $HOME && ./run
 ```
 
+All courses in save in /home/user/.howtoapp-courses/ 
+
+Try see (https://github.com/voidcode/.howtoapp-courses)
