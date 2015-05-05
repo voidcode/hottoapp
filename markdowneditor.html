@@ -10,6 +10,15 @@
 			$('.markdowneditor').focus();
 			var currentHomepath;
 			var currentSeletedCourse;
+			$('.markdowneditor ol').keypress(function(event){
+				var charCode = event.charCode || event.keyCode();
+				if(charCode == 13){
+					$('.markdowneditor ol').insertBefore('li' ,$('<li/>', {
+						html: 'newElement'
+					}));
+					alert($('.markdowneditor').html());
+				}
+			});
 			window.saveMarkdownEditorData = function(){
 				var savePath = '/home/'+currentHomepath+'/.howtoapp-courses/'+currentSeletedCourse+'.md';
 				alert('saveMarkdownEditorData is clcked!! savePath-->'+savePath);
@@ -22,21 +31,68 @@
 					alert('.md is updated!!with->'+ $('.markdowneditor').html());
 				});
 			}
+			window.replaceSelectedText = function(tagname, replacementText) {
+			    var sel, range;
+			    if (window.getSelection) {
+			        sel = window.getSelection();
+			        if (sel.rangeCount) {
+			            range = sel.getRangeAt(0);
+			            range.deleteContents();
+			            var tag = document.createElement(tagname);
+			            var reText = document.createTextNode(replacementText);
+			            tag.appendChild(reText);
+			            range.insertNode(tag);
+			        }
+			    } else if (document.selection && document.selection.createRange) {
+			        range = document.selection.createRange();
+			        range.text = replacementText;
+			    }
+			}
+			window.getSelectionText = function() {
+			    var text = "";
+			    if (window.getSelection) {
+			        text = window.getSelection().toString();
+			    } else if (document.selection && document.selection.type != "Control") {
+			        text = document.selection.createRange().text;
+			    }
+			    return text;
+			}
+			window.showInsertLinkDialog = function(){
+				var url = prompt('Insert a link', 'https://');
+				if(url != null){
+					$('.markdowneditor').append($('<a/>', {
+						html: url,
+						href: url,
+						target: '_blank'
+					}));
+				}
+			}
 			window.insertTag = function(tagname){
 				var markdowneditor = $('.markdowneditor');
-				if(tagname === 'hr'){
+				var selText = getSelectionText();
+				if(tagname === 'hr'){//HR
 					markdowneditor.append('<hr/>');
-				} else if(tagname === 'a'){
-					markdowneditor.append('<a href="">Link</a>');
-				} else if(tagname === 'ol'){
-					markdowneditor.append('<ol><li>1.</li><li>2.</li></ol>');
-				} else if(tagname === 'ul'){
-					markdowneditor.append('<ul><li>*</li><li>*</li></ul>');
+				} else if(tagname === 'a'){//LINK 
+					showInsertLinkDialog();
+				} else if(tagname === 'ol'){//OL
+					if(selText != '')
+						markdowneditor.append('<ol><li>1. '+selText+'</li></ol>');
+					else
+						markdowneditor.append('<ol><li>1.</li></ol>');
+				} else if(tagname === 'ul'){//UL
+					if(selText != '')
+						markdowneditor.append('<ul><li>'+selText+'</li></ul>');
+					else
+						markdowneditor.append('<ul><li>*</li></ul>');
 				} 
 				else {
-					markdowneditor.append($('<'+tagname+'/>', {
-						html: String(tagname).toUpperCase()
-					}));
+					if(selText != ''){
+						replaceSelectedText(tagname, selText);
+					} else {
+						markdowneditor.append($('<'+tagname+'/>', {
+							html: String(tagname).toUpperCase()
+						}));
+					}
 				}
 			}
 			window.loadMdFiles = function (homepath, coursename){

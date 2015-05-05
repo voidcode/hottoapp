@@ -7,13 +7,14 @@ Tutorials is make in .md file.
 Multiple choice test make in and .json file.
 
 
-#You need pip to be install (sudo apt-get install python-pip)
+
+#Install and run
 ```
-sudo pip install markdown2
+gksudo install
 ```
 
 
-#Run it with python
+#Just run it (after install)
 ```
-python main.py
+./run
 ```

@@ -82,6 +82,8 @@ class EventHandler:
 		Gtk.main_quit(*args)
 	def onInsertTag(self, args, tagname):
 		wv_edit.execute_script('insertTag("%s");' % tagname)
+	def codeToogleView(self, *args):
+		print 'ToggleCodeView'
 	def showMarkdownEditor(self, coursename):
 		builder.add_from_file(os.getcwd() + "/ui/markdowneditor.glade")
 
@@ -209,6 +211,15 @@ class EventHandler:
 		btnHr.connect('clicked', self.onInsertTag, 'hr')
 		rigthHbox.add(btnHr)
 
+
+		#code view
+		codeImg = Gtk.Image()
+		codeImg.set_from_file(os.getcwd() + '/images/png/code_toggle.png')
+		btnCode = Gtk.Button()
+		btnCode.set_image(codeImg)
+		btnCode.connect('clicked', self.codeToogleView)
+		rigthHbox.add(btnCode)
+
 		#add leftHbox to leftBox
 		rigthBox.add(rigthHbox)
 
@@ -311,9 +322,17 @@ class EventHandler:
 #load userui from .glade file
 builder = Gtk.Builder()
 builder.add_from_file(os.getcwd() + "/ui/userui.glade")
+
 #adding EventHandler class to builder
 eh = EventHandler()
 builder.connect_signals(eh)
+
+
+startExamImg = Gtk.Image()
+startExamImg.set_from_file(os.getcwd()+'/images/svg/stopwatch6.svg')
+btn_startexam = builder.get_object('btn_startexam')
+btn_startexam.set_image(startExamImg)
+
 #load all .md and .json file into cf
 cf = CourseFolder(os.getenv('HOME') +'/.howtoapp-courses')
 wv.connect('load-finished', eh.onWvLoadFinished)
@@ -328,29 +347,29 @@ mainwindow.fullscreen()
 mainwindow.connect("delete-event", Gtk.main_quit)
 mainwindow.show_all()
 
+
+box_left = builder.get_object('main_paned')
+box_left.override_background_color(0, bgColor)
+
 #adding logo
 logo = Gtk.Image()
 logo.set_from_file(os.getcwd() +'/images/logo.svg')
 
-btnLogo = Gtk.Button()
+btnLogo = builder.get_object('btnlogo')
 btnLogo.connect('clicked', eh.toggleFullScreen)
 btnLogo.set_image(logo) 
-btnLogo.set_relief(Gtk.ReliefStyle.NONE)
-logo.override_background_color(0, bgColor)
+#btnLogo.set_relief(Gtk.ReliefStyle.NONE)
+#logo.override_background_color(0, bgColor)
 
-#build/fill listbox
-listTopLabel = Gtk.Label() #set title of listbox
-listTopLabel.set_halign(Gtk.Align.START)
-listTopLabel.set_markup('<b>All courses:</b>')
-
-
+sw_left = builder.get_object("sw_left")
 #load listbox
-listbox = builder.get_object("listbox")
+listbox = Gtk.ListBox()
+sw_left.add(listbox)
+
 #set bgcolor
 listbox.add(btnLogo)
 listbox.set_selection_mode(Gtk.SelectionMode.NONE)
 listbox.override_background_color(0, bgColor)
-listbox.add(listTopLabel)
 
 hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
 
@@ -366,6 +385,7 @@ for coursename in cf.getMdFiles():
 	#hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
 	mdbtn = Gtk.Button(label=coursename.split(".")[0].title())
 	mdbtn.connect("clicked", eh.onTutorialsListboxItemClicked)
+	mdbtn.set_size_request(20, 40)
 	row.add(mdbtn)
 	listbox.add(row)
 #show listbox
@@ -376,9 +396,9 @@ listbox.show_all()
 		#convert .md to .html
 		#load .html file in vw 
 
-#addind vw to scrolledWindow
-scrolledWindow = builder.get_object("scrolledWindow")
-scrolledWindow.add(wv)
-scrolledWindow.show_all()
+#addind vw to sv_rigth
+sw_rigth = builder.get_object("sw_rigth")
+sw_rigth.add(wv)
+sw_rigth.show_all()
 #run gtk.main
 Gtk.main()

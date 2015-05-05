@@ -1,14 +1,6 @@
-!#/bin/sh
-gksudo -i
-print "Install python-pip ..."
-apt-get install python-pip
-print "Install markdown ..."
-pip install markdown
-
-print "Install git ..."
+#!/bin/sh
 apt-get install git
-
-print "Dowload howtoapp-course folder from: github.com/voidcode/.howtoapp-course.git"
-cd /tmp
-git clone github.com/voidcode/.howtoapp-course.git
-mv /tmp/.howtoapp-course/ ~/.howtoapp-course/
+atp-get install pip
+pip install python-markdown
+cd $HOME && git clone https://github.com/voidcode/.howtoapp-courses.git
+python main.py
