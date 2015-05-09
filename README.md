@@ -1,6 +1,6 @@
 ##HowToApp
 
-This is the leadning-app by on Ubuntu.
+This is the leadning-app created on Ubuntu Desktop 14.04
 
 All courses is create in .md file. 
 
@@ -13,7 +13,7 @@ The are create in json format, the file-ending is .test
 
 You need to save course(.test + .md) in the /home/your-user/.howtoapp-courses/ folder
 
-Below you can see screenshots from HowToApp on Ubuntu 14.04
+Below you can see screenshots an running HowToApp on Ubuntu Desktop
 
 ![CourseView](https://raw.githubusercontent.com/voidcode/howtoapp/master/PR/HowToApp_001.png)
 
