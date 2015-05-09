@@ -37,13 +37,12 @@ Try see (https://github.com/voidcode/.howtoapp-courses)
 
 #Or manual install and run
 ```
-    sudo -i &&
-    apt-get install git &&
-    atp-get install pip &&
-    pip install python-markdown &&
-    cd $HOME && git clone https://github.com/voidcode/.howtoapp-courses.git &&
-    cd /home/$USER && mkdir Apps &&
-    cd /home/$USER/Apps/ && git clone git@github.com:voidcode/howtoapp.git &&
+    sudo -i
+    apt-get install git
+    atp-get install pip
+    pip install python-markdown
+    cd /home/$USER/ && git clone https://github.com/voidcode/.howtoapp-courses.git
+    cd /home/$USER/ && git clone git@github.com:voidcode/howtoapp.git
     cd howtoapp && chmod +x main.py &&
     ./run
 ```
