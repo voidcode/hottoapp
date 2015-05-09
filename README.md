@@ -42,7 +42,8 @@ Try see (https://github.com/voidcode/.howtoapp-courses)
     atp-get install pip
     pip install python-markdown
     cd $HOME && git clone https://github.com/voidcode/.howtoapp-courses.git
-    cd $HOME && git clone git@github.com:voidcode/howtoapp.git
+    cd $HOME && mkdir /Apps 
+    cd $HOME/Apps && git clone git@github.com:voidcode/howtoapp.git
     chmod +x main.py
     ./run
 ```
