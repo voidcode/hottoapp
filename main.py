@@ -402,6 +402,7 @@ fristRun = True
 for coursename in cf.getMdFiles():
 	#only load frist course
 	if fristRun==True:
+		#eh.currentSelectedCoursename = coursename
 		loadCourse(coursename)
 		fristRun=False
 	row = Gtk.ListBoxRow()

@@ -70,7 +70,11 @@
 			window.insertTag = function(tagname){
 				var markdowneditor = $('.markdowneditor');
 				var selText = getSelectionText();
-				if(tagname === 'hr'){//HR
+				if(tagname === 'br'){//HR
+					//TODO breakline by selected postion
+					markdowneditor.append('<br/>');
+				}
+				else if(tagname === 'hr'){//HR
 					markdowneditor.append('<hr/>');
 				} else if(tagname === 'a'){//LINK 
 					showInsertLinkDialog();
