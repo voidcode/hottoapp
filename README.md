@@ -13,7 +13,7 @@ The are create in json format, the file-ending is .test
 
 You need to save course(.test + .md) in the /home/your-user/.howtoapp-courses/ folder
 
-Below you can see screenshots an running HowToApp on Ubuntu Desktop
+Below you can see screenshots an running HowToApp app
 
 ![CourseView](https://raw.githubusercontent.com/voidcode/howtoapp/master/PR/HowToApp_001.png)
 
@@ -34,3 +34,15 @@ Below you can see screenshots an running HowToApp on Ubuntu Desktop
 All courses are save in /home/user/.howtoapp-courses/ 
 
 Try see (https://github.com/voidcode/.howtoapp-courses)
+
+#Or manual install and run
+```
+    sudo -i
+    apt-get install git
+    atp-get install pip
+    pip install python-markdown
+    cd $HOME && git clone https://github.com/voidcode/.howtoapp-courses.git
+    cd $HOME && git clone git@github.com:voidcode/howtoapp.git
+    chmod +x main.py
+    ./run
+```
