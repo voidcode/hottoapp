@@ -37,9 +37,11 @@ addBrowserSettings(wv_edit)
 
 #wv.execute_script("alert('ddd');")
 #build html vars with stylesheet-link
-cssLinkTag = "<link rel=\"stylesheet\" type=\"text/css\" href=\""+ os.getcwd() + "/css/desktop.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\""+ os.getcwd() + "/css/course.css\">"
-htmlStartString = "<!DOCTYPE html><html><head>"+cssLinkTag+"<meta charset=\"UTF-8\"></head><body>"
-htmlEndString = "</body></html>"
+css = "<link rel=\"stylesheet\" type=\"text/css\" href=\""+ os.getcwd() + "/css/desktop.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\""+ os.getcwd() + "/css/course.css\">"
+jsJq = "<script type=\"text/javascript\" src=\""+os.getcwd()+"/js/jquery-1.11.2.min.js\"></script>"
+jsDefault = "<script type=\"text/javascript\" src=\""+os.getcwd()+"/js/default.js\"></script>"
+htmlStartString = "<!DOCTYPE html><html><head>"+css+"<meta charset=\"UTF-8\"></head><body>"
+htmlEndString = jsJq+jsDefault+"</body></html>"
 
 
 bgColor = Gdk.RGBA.from_color(Gdk.color_parse('#141414'))
@@ -52,7 +54,7 @@ def loadCourse(coursefilename):
 		tmp = data.read()
 	#print htmlStartString+markdown2.markdown(tmp)+htmlEndString
 	wv.load_html_string(htmlStartString+markdown2.markdown(tmp)+htmlEndString, "file:///")
-
+	print htmlStartString+markdown2.markdown(tmp)+htmlEndString
 class CourseFolder:
 	global mdfiles
 	global jsonfiles
@@ -84,6 +86,10 @@ class EventHandler:
 		wv_edit.execute_script('insertTag("%s");' % tagname)
 	def codeToogleView(self, *args):
 		print 'ToggleCodeView'
+	def onShowAbortDialog(self, *args):
+		abortdialog = builder.add_from_file(os.getcwd() + '/ui/abort.glade')
+		#sw_rigth.add(abortdialog)
+		#.show_all()
 	def showMarkdownEditor(self, coursename):
 		builder.add_from_file(os.getcwd() + "/ui/markdowneditor.glade")
 
@@ -203,22 +209,21 @@ class EventHandler:
 		dotslistBold.connect('clicked', self.onInsertTag, 'ul')
 		rigthHbox.add(dotslistBold)
 
-		#hr
-		hrImg = Gtk.Image()
-		hrImg.set_from_file(os.getcwd() + '/images/png/hr.png')
-		btnHr = Gtk.Button()
-		btnHr.set_image(hrImg)
-		btnHr.connect('clicked', self.onInsertTag, 'hr')
-		rigthHbox.add(btnHr)
-
+		#br
+		brImg = Gtk.Image()
+		brImg.set_from_file(os.getcwd() + '/images/svg/br.svg')
+		btnBr = Gtk.Button()
+		btnBr.set_image(brImg)
+		btnBr.connect('clicked', self.onInsertTag, 'br')
+		rigthHbox.add(btnBr)
 
 		#code view
-		codeImg = Gtk.Image()
-		codeImg.set_from_file(os.getcwd() + '/images/png/code_toggle.png')
-		btnCode = Gtk.Button()
-		btnCode.set_image(codeImg)
-		btnCode.connect('clicked', self.codeToogleView)
-		rigthHbox.add(btnCode)
+		#codeImg = Gtk.Image()
+		#codeImg.set_from_file(os.getcwd() + '/images/png/code_toggle.png')
+		#btnCode = Gtk.Button()
+		#btnCode.set_image(codeImg)
+		#btnCode.connect('clicked', self.codeToogleView)
+		#rigthHbox.add(btnCode)
 
 		#add leftHbox to leftBox
 		rigthBox.add(rigthHbox)
@@ -318,6 +323,12 @@ class EventHandler:
 		elif self.isMainWindowFullscreen is False:
 			self.isMainWindowFullscreen = True
 			mainwindow.fullscreen()
+	def pageScrollUp(self, *args):
+		wv.execute_script('pageScrollDown')
+		wv_edit.execute_script('pageScrollDown')
+	def pageScrollDown(self, *args):
+		wv.execute_script('pageScrollDown')
+		wv_edit.execute_script('pageScrollDown')
 #Class-------------------------------------------------END
 #load userui from .glade file
 builder = Gtk.Builder()
@@ -341,10 +352,23 @@ mainwindow = builder.get_object("main_window")
 mainwindow.set_icon_from_file(os.getcwd() + "/images/logo.svg")
 mainwindow.override_background_color(0, bgColor)
 mainwindow.set_position(Gtk.WindowPosition.CENTER)
-
 mainwindow.fullscreen()
-
 mainwindow.connect("delete-event", Gtk.main_quit)
+
+#set btn_scrolldown
+scrolldownImg = Gtk.Image()
+scrolldownImg.set_from_file(os.getcwd()+'/images/svg/down_arrow.svg')
+btn_scrolldown = builder.get_object('btn_scrolldown')
+btn_scrolldown.connect('clicked', eh.pageScrollDown)
+btn_scrolldown.set_image(scrolldownImg)
+
+#set btn_scrollup
+scrollupImg = Gtk.Image()
+scrollupImg.set_from_file(os.getcwd()+'/images/svg/up_arrow.svg')
+btn_scrollup = builder.get_object('btn_scrollup')
+btn_scrollup.connect('clicked', eh.pageScrollUp)
+btn_scrollup.set_image(scrollupImg)
+
 mainwindow.show_all()
 
 

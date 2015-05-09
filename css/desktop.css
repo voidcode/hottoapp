@@ -34,11 +34,13 @@ h5 {
 p {
 	font-size: 12px;
 	margin-bottom: 5px;
+	line-height: 18px;
 }
 hr {
-	margin-top: 5vh;
-	border:1vh solid #e2e0de;
-	-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;
+	margin-top: 20px;
+	border:1px solid #e2e0de;
+	//-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;
+	margin-bottom: 30px;
 }
 img {
 	border:1vh solid #e2e0de;

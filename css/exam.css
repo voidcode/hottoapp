@@ -7,6 +7,14 @@ body {
 	.exam-items ul {
 
 	}	
+		.exam .time {
+			font-size: 30px;
+			font-weight: bold;
+			text-align: right;
+			width: calc(100vw - 5vw);
+			color: #f07746;
+			margin-right: 25px;
+		}
 		.exam .item ul li {
 		}
 		.exam .item .question {

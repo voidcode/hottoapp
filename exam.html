@@ -11,6 +11,7 @@
 			<form action="" method="post">
 				<h1></h1>
 				<div class="info"></div>
+				<div class="time">&nbsp</div>
 				<div class="question-items"></div>
 				<div class="item">
 					<input type="button" class="btn-submit" value="Check all answers"/>
@@ -19,20 +20,15 @@
 		</div>
 		<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
 		<script type="text/javascript">			
-		$(document).ready(function () {			
-			function checkAllQuestion(){
-				$('.exam .question-items .item input[type="checkbox"]').each(function (index, element) {
-					var elm = $(element);
-					if(String(elm.prop('checked')) === String(elm.val())){
-						elm.parent().css('color', '#000');
-						elm.parent().css('background-color', '#597b5c');//green
-					}
-					else {
-						elm.parent().css('color', '#fff');
-						elm.parent().css('background-color', '#b11e14');//red
-					}
-				});
+		$(document).ready(function () {	
+			window.pageScrollUp = function(){
+				alert('pageScrollUp');
 			}
+			window.pageScrollDown = function(){
+
+				alert('pageScrollDown');
+				$('body').scrollTo('hr');
+			}	
 			function getUrlVars()
 			{
 			    var vars = [], hash;
@@ -66,7 +62,62 @@
 			}
 			$('.exam .item .btn-submit').on('click', function (event) {
 				checkAllQuestion();
+				$(this).hide('fast');
 			});
+			var secCouter = 0;
+			var minsCounter = 0;
+			var hoursesCounter = 0;
+			var timeIntervalLoop;
+			var secInnerCouter = 0;			
+			var minsInnerCouter = 0;
+			var endTimeWatchIsSat=false;
+			window.runTimeWatchLoop = function() {
+				secInnerCouter +=1;
+				secCouter +=1;
+				if(secInnerCouter >= 60){
+					minsCounter +=1;
+					secInnerCouter=0;
+					minsInnerCouter +=1;
+				}
+				if(minsInnerCouter >= 60){
+					hoursesCounter +=1;
+					minsInnerCouter =0;
+					minsCounter = 0;
+				}
+				//if(minsCounter >= 60) hoursesCounter +=1;
+
+				if(minsCounter === 0 && !hoursesCounter >0) //only show sec
+					$('.time').html(secInnerCouter+'s');
+				else if(minsCounter > 0 && hoursesCounter === 0){ //show min and sec
+					$('.time').html(minsCounter+ 'm, '+secInnerCouter+'s');
+				} else if(hoursesCounter > 0){ //show hours, min and sec
+					$('.time').html(hoursesCounter +'h, '+minsCounter+ 'm, '+secInnerCouter+'s');
+				}
+			}
+			window.endTimeWatch = function(){
+				clearInterval(timeIntervalLoop);
+				if(!endTimeWatchIsSat){
+					$('.time').html('Done in '+$('.time').html())
+					$('.time').css('color', '#597b5c');
+					endTimeWatchIsSat = true;
+				}
+				//scrollTop
+				$("html, body").animate({scrollTop:0}, '500', 'swing', function() { });
+			}
+			function checkAllQuestion(){
+				window.endTimeWatch();
+				$('.exam .question-items .item input[type="checkbox"]').each(function (index, element) {
+					var elm = $(element);
+					if(String(elm.prop('checked')) === String(elm.val())){
+						elm.parent().css('color', '#000');
+						elm.parent().css('background-color', '#597b5c');//green
+					}
+					else {
+						elm.parent().css('color', '#fff');
+						elm.parent().css('background-color', '#b11e14');//red
+					}
+				});
+			}
 			window.loadMdFiles = function(courseFolder, courseName){
 				$.ajax({
 					url: courseFolder+courseName+'.test',
@@ -80,6 +131,7 @@
 								newQuestionItem(file.exams, i)
 							);
 						}
+						timeIntervalLoop = setInterval(window.runTimeWatchLoop, 1000);
 					} else {
 						$('.exam').html(
 							'<h1>No course-exams :(</h1>'+

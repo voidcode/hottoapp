@@ -22,6 +22,6 @@ Multiple choice tests are make with json format, the file ending is .test
     cd $HOME && ./run
 ```
 
-All courses in save in /home/user/.howtoapp-courses/ 
+All courses are save in /home/user/.howtoapp-courses/ 
 
 Try see (https://github.com/voidcode/.howtoapp-courses)
