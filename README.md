@@ -28,7 +28,7 @@ Below you can see screenshots an running HowToApp app
 
 #Just run it (after install)
 ```
-    cd $HOME && ./run
+    cd /home/$USER/howtoapp && chmod +x main.py && ./run
 ```
 
 All courses are save in /home/user/.howtoapp-courses/ 
@@ -40,9 +40,8 @@ Try see (https://github.com/voidcode/.howtoapp-courses)
     sudo -i
     apt-get install git
     atp-get install pip
-    pip install python-markdown
+    pip install markdown2
     cd /home/$USER/ && git clone https://github.com/voidcode/.howtoapp-courses.git
-    cd /home/$USER/ && git clone git@github.com:voidcode/howtoapp.git
-    cd howtoapp && chmod +x main.py &&
-    ./run
+    cd /home/$USER/ && git clone https://github.com/voidcode/howtoapp.git
+    cd /home/$USER/howtoapp && chmod +x main.py && ./run
 ```
