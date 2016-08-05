@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from gi.repository import Gtk, Gdk, GdkPixbuf
-from cassandra.cluster import Cluster
 import json, os, markdown2
 from pprint import pprint
 from gi.repository import WebKit
