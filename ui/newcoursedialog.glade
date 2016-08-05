@@ -43,6 +43,12 @@
             <property name="active">0</property>
             <items>
               <item id="&lt;Enter ID&gt;" translatable="yes">Attribution 4.0 International (CC BY 4.0)</item>
+              <item translatable="yes">Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)</item>
+              <item translatable="yes">Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0</item>
+              <item translatable="yes">Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)</item>
+              <item translatable="yes">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</item>
+              <item translatable="yes">Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</item>
+              <item translatable="yes">Public Domain</item>
             </items>
           </object>
           <packing>

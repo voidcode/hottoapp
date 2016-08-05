@@ -1,7 +1,10 @@
 #!/bin/sh
 apt-get install git
 atp-get install pip
+apt-get install libev4 libev-dev
+pip install cassandra-driver
 pip install markdown2
 cd /home/$USER && git clone https://github.com/voidcode/.howtoapp-courses.git
 cd /home/$USER && git clone https://github.com/voidcode/howtoapp.git
-cd /home/$USER/howtoapp/ && chmod +x run && ./run
+cd /home/$USER/howtoapp/ && chmod +x run
+./run

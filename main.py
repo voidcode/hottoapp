@@ -1,10 +1,11 @@
 #!/usr/bin/env python
-from gi.repository import Gtk, Gdk
+from gi.repository import Gtk, Gdk, GdkPixbuf
+from cassandra.cluster import Cluster
 import json, os, markdown2
 from pprint import pprint
-
 from gi.repository import WebKit
-coursesRoot = os.getenv('HOME')+'/.howtoapp-courses'
+approot = os.path.dirname(os.path.realpath(__file__))
+coursesRoot = approot+'/courses/'
 if not os.path.exists(coursesRoot):
 	print 'mkdir --> '+coursesRoot
 	os.mkdir(coursesRoot)
@@ -43,14 +44,13 @@ jsDefault = "<script type=\"text/javascript\" src=\""+os.getcwd()+"/js/default.j
 htmlStartString = "<!DOCTYPE html><html><head>"+css+"<meta charset=\"UTF-8\"></head><body>"
 htmlEndString = jsJq+jsDefault+"</body></html>"
 
-
 bgColor = Gdk.RGBA.from_color(Gdk.color_parse('#141414'))
 #Class-------------------------------------------------STARTs
 #this class load all course file into class vars
 def loadCourse(coursefilename):
 	currentSelectedCourse = coursename
 	tmp=''
-	with open(os.getenv('HOME') +'/.howtoapp-courses/'+ coursefilename, 'r') as data:
+	with open(coursesRoot + coursefilename, 'r') as data:
 		tmp = data.read()
 	#print htmlStartString+markdown2.markdown(tmp)+htmlEndString
 	wv.load_html_string(htmlStartString+markdown2.markdown(tmp)+htmlEndString, "file:///")
@@ -87,16 +87,65 @@ class EventHandler:
 	def codeToogleView(self, *args):
 		print 'ToggleCodeView'
 	def onShowAbortDialog(self, *args):
-		abortdialog = builder.add_from_file(os.getcwd() + '/ui/abort.glade')
-		#sw_rigth.add(abortdialog)
-		#.show_all()
+		# a  Gtk.AboutDialog
+		aboutdialog = Gtk.AboutDialog()
+        # lists of authors and documenters (will be used later)
+		authors = ["Voidcode"]
+		documenters = ["Voidcode"]
+        # we fill in the aboutdialog
+		aboutdialog.set_copyright("Copyright \xc2\xa9 2016 - Voidcode")
+		aboutdialog.set_authors(authors)
+		aboutdialog.set_documenters(documenters)
+		aboutdialog.set_website("https://github.com/voidcode/howtoapp")
+		aboutdialog.set_website_label("https://github.com/voidcode/howtoapp")
+		aboutdialog.set_title("HowToApp - Just learn it NOW ...")
+		aboutdialog.set_program_name("HowToApp - just learn it NOW")
+		aboutdialog.set_logo(GdkPixbuf.Pixbuf.new_from_file(os.getcwd() + '/images/logo.svg'))
+
+		aboutdialog.override_background_color(0, Gdk.RGBA.from_color(Gdk.color_parse('#141414')))
+        # to close the aboutdialog when "close" is clicked we connect the
+        # "response" signal to on_close        
+		aboutdialog.connect('response', lambda aboutdialog, data: aboutdialog.destroy())
+        # show the aboutdialog
+		aboutdialog.show()
+	def showGetCourseDialog(self, *args):
+		builder.add_from_file(os.getcwd()+"/ui/getcourse.glade")
+		win_getcourse = builder.get_object("win_getcourse")
+		win_getcourse.override_background_color(0, bgColor)
+
+		sw_onlinecourseview = builder.get_object('sw_onlinecourseview')
+		wv_getcourse = WebKit.WebView()
+		addBrowserSettings(wv_getcourse)
+		wv_getcourse.open(os.getcwd()+'/getcourse.html')
+		sw_onlinecourseview.add(wv_getcourse)
+
+		win_getcourse.show_all()
+		builder.connect_signals(self)
+	def se_getcourse_query_search_changed_cb(self, widget):
+		se_getcourse_query = builder.get_object("se_getcourse_query")
+		print(se_getcourse_query.get_text())
+
+		#reload / init of webview... this can be don better then this
+		builder.add_from_file(os.getcwd()+"/ui/getcourse.glade")
+		win_getcourse = builder.get_object("win_getcourse")
+		win_getcourse.override_background_color(0, bgColor)
+
+		sw_onlinecourseview = builder.get_object('sw_onlinecourseview')
+		wv_getcourse = WebKit.WebView()
+		addBrowserSettings(wv_getcourse)
+		wv_getcourse.open(os.getcwd()+'/getcourse.html?q='+se_getcourse_query.get_text())
+		sw_onlinecourseview.add(wv_getcourse)
+
+		win_getcourse.show_all()
+
+		sw_onlinecourseview.show_all()
 	def showMarkdownEditor(self, coursename):
 		builder.add_from_file(os.getcwd() + "/ui/markdowneditor.glade")
 
 		filechooser = builder.get_object('filechooser')
-		filechooser.set_filename(os.getenv('HOME') + '/.howtoapp-courses/'+coursename+'.md')
+		filechooser.set_filename(coursesRoot+coursename+'.md')
 
-		mdCourseFilePath = os.getenv('HOME') + '/.howtoapp-courses/'+coursename+'.md'
+		mdCourseFilePath = coursesRoot+coursename+'.md'
 
 		mdDataBuilder=''
 		if os.path.exists(mdCourseFilePath):
@@ -265,7 +314,7 @@ class EventHandler:
 		addquestionsdialog.show_all()
 	def onBtnNext_newcoursedialog(self, *args):
 		label_status = builder.get_object('label_status')
-		coursename = builder.get_object('entry_coursename').get_text()
+		coursename = builder.get_object('entry_coursename').get_text().lower().replace(' ', '-')
 		
 		tv_info = builder.get_object('tv_info')
 		buf = tv_info.get_buffer()
@@ -311,8 +360,7 @@ class EventHandler:
 	def onWvLoadFinished(self, frame, s):
 		if not self.currentSelectedCoursename is '': 
 			courseName = 'skp'
-			courseFolder = os.getenv('HOME') +'/.howtoapp-courses/'
-			wv.execute_script("loadMdFiles('"+courseFolder+"', '"+self.currentSelectedCoursename+"');")
+			wv.execute_script("loadMdFiles('"+coursesRoot+"', '"+self.currentSelectedCoursename+"');")
 	def onStartExam(self, btn):
 		path = os.getcwd()+"/exam.html"
 		wv.open(path)
@@ -345,7 +393,7 @@ btn_startexam = builder.get_object('btn_startexam')
 btn_startexam.set_image(startExamImg)
 
 #load all .md and .json file into cf
-cf = CourseFolder(os.getenv('HOME') +'/.howtoapp-courses')
+cf = CourseFolder(coursesRoot)
 wv.connect('load-finished', eh.onWvLoadFinished)
 
 mainwindow = builder.get_object("main_window")

@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Online Course View</title>
+		<link rel="stylesheet" type="text/css" href="css/desktop.css" />
+		<link rel="stylesheet" type="text/css" href="css/getcourse.css" />
+		<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+		<script type="text/javascript">
+		$(document).ready(function(item){
+			var getUrlParameter = function getUrlParameter(sParam) {
+				var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+					sURLVariables = sPageURL.split('&'),
+					sParameterName,
+					i;
+				for (i = 0; i < sURLVariables.length; i++) {
+					sParameterName = sURLVariables[i].split('=');
+					if (sParameterName[0] === sParam) {
+						return sParameterName[1] === undefined ? true : sParameterName[1];
+					}
+				}
+			};
+			function newCourseItem(data){
+				return '<div class="item" style="color:#'+data.color+';background-color:#'+data.bgcolor+';">'+
+					'<div class="h1">'+data.title+'</div>'+
+					'<div class="short">'+data.info+'</div>'+
+					'<button id="btn-'+data.id+'" url="'+data.url+'">Add to basket</button>'+
+				'</div>';
+			}
+			var Q = getUrlParameter('q');
+			alert(Q);
+			$.ajax({
+				url: "http://127.0.0.1:5000/top_courses",
+				crossDomain: true,
+				dataType: 'json'	
+			}).done(function(data){
+				for(var i=0; i<data.resluts.length; i++){
+					$(".getcourses-view").append(newCourseItem(data.resluts[i]));
+					$("#btn-"+data.resluts[i].id).on("click", function(event){
+						$(this).html("In basket");
+						$(this).css("background-color", "green");
+					});
+				}
+			});
+		});
+		</script>
+	</head>
+	<body>
+		<div class="getcourses-view"></div>
+	</body>
+</html>

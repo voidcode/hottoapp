@@ -1,0 +1,35 @@
+.getcourses-view {
+    width:100vw;
+    height:100vh;
+}
+    .getcourses-view .item {
+        width:24vw;
+        float:left;
+        margin: 1vw 1vh;
+    }
+    .getcourses-view .item:hover {
+        background-color:#141414;
+    }
+        .getcourses-view .item .h1 {
+            width:20vw;
+            height: 5vh;
+            overflow: hidden;
+        }
+        .getcourses-view .item .short {
+            width:20vw;
+            margin-bottom: 2vh;
+            font-size: 2vh;
+            height: 10vh;
+            text-align: center;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        .getcourses-view .item button {
+            width:20vw;
+            height: 4vh;
+           	float:left;
+        }
+                .getcourses-view .item button:hover {
+                    cursor: pointer;
+                    font-weight: bold;
+                }

@@ -3,7 +3,6 @@
 1. save lasr selected course and load after frist course startup
 2. Fix pageScrollUp and pageScrollDown
 3. Fix search in course-folder
-4. Fix File->Abort open abortDialog
 5. Add TTS on userui.glade by selected-text
 6. Fix Save CourseBuilder data in file, and on delete-event
 7. Fix Br on CourseBuilder

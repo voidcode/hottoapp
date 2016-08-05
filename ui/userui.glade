@@ -15,7 +15,7 @@
   <object class="GtkWindow" id="main_window">
     <property name="name">HotToApp</property>
     <property name="can_focus">False</property>
-    <property name="title" translatable="yes">HowToApp</property>
+    <property name="title" translatable="yes">HowToApp - Just learn it</property>
     <property name="default_width">800</property>
     <property name="default_height">500</property>
     <property name="icon">logo.svg</property>
@@ -33,29 +33,37 @@
               <object class="GtkMenuItem" id="menuitem1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_File</property>
+                <property name="label" translatable="yes">MENU</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menuitem_abort">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
+                      <object class="GtkMenuItem" id="imagemenuitem_abort">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Abort &amp; donation</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="onShowAbortDialog" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="imagemenuitem_getcourses">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Download courses</property>
+                        <signal name="activate" handler="showGetCourseDialog" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem_newcourse">
-                        <property name="label">New course</property>
+                        <property name="label">Create a course</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="image">image1</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="openNewCourseDialog" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="imagemenuitem_abort">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Abort</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="onShowAbortDialog" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -65,7 +73,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem1">
+                      <object class="GtkImageMenuItem" id="imagemenuitem2">
                         <property name="label">Exit</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -118,7 +126,7 @@
                     <property name="margin_left">10</property>
                     <property name="margin_right">10</property>
                     <property name="xalign">0</property>
-                    <property name="label" translatable="yes">All courses.</property>
+                    <property name="label" translatable="yes">Courses</property>
                     <attributes>
                       <attribute name="font-desc" value="Ubuntu 15"/>
                       <attribute name="weight" value="bold"/>
@@ -131,29 +139,13 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkSearchEntry" id="searchentry1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="margin_left">5</property>
-                    <property name="margin_right">5</property>
-                    <property name="margin_bottom">5</property>
-                    <property name="primary_icon_name">edit-find-symbolic</property>
-                    <property name="primary_icon_activatable">False</property>
-                    <property name="primary_icon_sensitive">False</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkScrolledWindow" id="sw_left">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="margin_left">5</property>
                     <property name="margin_right">5</property>
                     <property name="margin_bottom">5</property>
+                    <property name="hscrollbar_policy">never</property>
                     <child>
                       <placeholder/>
                     </child>
